@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ votacion.titulo }}{% endblock %}
+
+{% block content %}
+<nav class="volver-atras">
+    <a href="{% url 'catalogo:votaciones' %}"><span>Volver a las votaciones</span></a>
+</nav>
+
+<div class="detalles-content">
+    <article class="detalles-article">
+        <header class="detalles-header">
+            <h1>{{ votacion.titulo }}</h1>
+            <p>{{ votacion.categoria.nombre }} · {{ votacion.categoria.edicion }}</p>
+        </header>
+
+        <p class="detalles-description">{{ votacion.descripcion|default:"Sin descripción." }}</p>
+
+        <dl class="detalle-info">
+            {% if votacion.fecha_inicio %}
+                <div class="detalle-dato">
+                    <dt>Inicio</dt>
+                    <dd>{{ votacion.fecha_inicio }}</dd>
+                </div>
+            {% endif %}
+            {% if votacion.fecha_cierre %}
+                <div class="detalle-dato">
+                    <dt>Cierre</dt>
+                    <dd>{{ votacion.fecha_cierre }}</dd>
+                </div>
+            {% endif %}
+            <div class="detalle-dato">
+                <dt>Opciones registradas</dt>
+                <dd>{{ opciones.count }}</dd>
+            </div>
+        </dl>
+
+        <section class="votar-section">
+            <header class="votar-header">
+                <h1>Opciones</h1>
+                <p>
+                    Consulta de opciones desde PostgreSQL. El registro del voto, el control de duplicados
+                    y las reglas de elegibilidad quedan pendientes para una entrega posterior
+                    (pendiente de validación del cliente).
+                </p>
+            </header>
+            <div class="opciones-lista">
+                {% for opcion in opciones %}
+                    <div class="opcion-voto">
+                        <img class="opcion-foto" src="{% static 'img/music.png' %}" alt="Foto de {{ opcion.nombre }}">
+                        <span class="opcion-datos">
+                            <span class="opcion-nombre">{{ opcion.nombre }}</span>
+                            {% if opcion.descripcion %}
+                                <span class="opcion-genero">{{ opcion.descripcion }}</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% empty %}
+                    <p>Esta votación aún no tiene opciones activas.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </article>
+</div>
+{% endblock %}

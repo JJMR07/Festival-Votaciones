@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de administrador</title>
+    <link rel="stylesheet" href="/Styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header-var">
+            <div class="logo">
+                <a href="/templates/index.html"><img src="/img/logo.png" alt="Logo"></a>
+            </div>
+            <div class="header-title">
+                <h2>Festival Vallenato</h2>
+            </div>
+            <div class="login-button">
+                <a href="/templates/public/login.html">Entrar</a>
+            </div>
+        </header>
+
+        <main class="main-content admin-main">
+            <section class="admin-hero">
+                <div class="admin-hero-texto">
+                    <span class="admin-badge">Administrador</span>
+                    <h1>Panel de control</h1>
+                    <p>Gestiona categorías, votaciones y opciones, y consulta los resultados del Festival Vallenato desde un solo lugar.</p>
+                </div>
+                <a href="/templates/index.html" class="btn-secundario">Volver al sitio</a>
+            </section>
+
+            <nav class="admin-tabs" role="tablist" aria-label="Secciones del panel de administrador">
+                <button class="admin-tab activo" type="button" role="tab" aria-selected="true" data-tab="panel">Panel</button>
+                <button class="admin-tab" type="button" role="tab" aria-selected="false" data-tab="categorias">Categorías</button>
+                <button class="admin-tab" type="button" role="tab" aria-selected="false" data-tab="votaciones">Votaciones</button>
+                <button class="admin-tab" type="button" role="tab" aria-selected="false" data-tab="opciones">Opciones</button>
+                <button class="admin-tab" type="button" role="tab" aria-selected="false" data-tab="resultados">Resultados</button>
+            </nav>
+
+            <!-- ============ PANEL PRINCIPAL ============ -->
+            <section id="tab-panel" class="admin-panel-tab activo" role="tabpanel" aria-label="Panel principal">
+                <div class="admin-kpis">
+                    <article class="admin-kpi">
+                        <span class="admin-kpi-valor">3</span>
+                        <span class="admin-kpi-etiqueta">Votaciones activas</span>
+                    </article>
+                    <article class="admin-kpi">
+                        <span class="admin-kpi-valor">4</span>
+                        <span class="admin-kpi-etiqueta">Categorías</span>
+                    </article>
+                    <article class="admin-kpi">
+                        <span class="admin-kpi-valor">18</span>
+                        <span class="admin-kpi-etiqueta">Opciones registradas</span>
+                    </article>
+                    <article class="admin-kpi">
+                        <span class="admin-kpi-valor">72%</span>
+                        <span class="admin-kpi-etiqueta">Participación</span>
+                    </article>
+                </div>
+
+                <section class="admin-bloque">
+                    <header class="admin-section-head">
+                        <div>
+                            <h2>Estado general del sistema</h2>
+                            <p>Resumen de las votaciones y su nivel de participación.</p>
+                        </div>
+                    </header>
+                    <ul class="admin-resumen">
+                        <li class="admin-resumen-fila">
+                            <span class="admin-estado admin-estado-activa">Activa</span>
+                            <span class="admin-resumen-nombre">Rey Profesional 2027</span>
+                            <span class="admin-resumen-dato">1.284 votos · 72% participación</span>
+                        </li>
+                        <li class="admin-resumen-fila">
+                            <span class="admin-estado admin-estado-programada">Programada</span>
+                            <span class="admin-resumen-nombre">Rey Aficionado 2027</span>
+                            <span class="admin-resumen-dato">Inicia el 01 de junio de 2027</span>
+                        </li>
+                        <li class="admin-resumen-fila">
+                            <span class="admin-estado admin-estado-cerrada">Cerrada</span>
+                            <span class="admin-resumen-nombre">Rey Infantil 2026</span>
+                            <span class="admin-resumen-dato">980 votos · 61% participación</span>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- ============ GESTIÓN DE CATEGORÍAS ============ -->
+            <section id="tab-categorias" class="admin-panel-tab" role="tabpanel" aria-label="Gestión de categorías" hidden>
+                <header class="admin-section-head">
+                    <div>
+                        <h2>Gestión de categorías</h2>
+                        <p>Crea, edita y elimina las categorías de votación del festival.</p>
+                    </div>
+                    <button class="btn" type="button" data-abrir="modal-categoria">Crear categoría</button>
+                </header>
+
+                <ul class="admin-lista admin-lista-categorias">
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <h3>Rey Profesional</h3>
+                            <p>Intérpretes profesionales que representan la tradición vallenata.</p>
+                            <span class="admin-chip">2 votaciones</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-categoria">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Profesional">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <h3>Rey Aficionado</h3>
+                            <p>Participantes aficionados de todo el país.</p>
+                            <span class="admin-chip">1 votación</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-categoria">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Aficionado">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <h3>Rey Infantil</h3>
+                            <p>Niños y niñas que inician en la música vallenata.</p>
+                            <span class="admin-chip">1 votación</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-categoria">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Infantil">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <h3>Rey Juvenil</h3>
+                            <p>Jóvenes talentos de la nueva generación vallenata.</p>
+                            <span class="admin-chip">0 votaciones</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-categoria">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Juvenil">Eliminar</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="admin-empty" hidden>
+                    <p>No hay categorías registradas todavía.</p>
+                    <button class="btn" type="button" data-abrir="modal-categoria">Crear la primera categoría</button>
+                </div>
+            </section>
+
+            <!-- ============ GESTIÓN DE VOTACIONES ============ -->
+            <section id="tab-votaciones" class="admin-panel-tab" role="tabpanel" aria-label="Gestión de votaciones" hidden>
+                <header class="admin-section-head">
+                    <div>
+                        <h2>Gestión de votaciones</h2>
+                        <p>Programa, activa, cierra y edita las votaciones de cada categoría.</p>
+                    </div>
+                    <button class="btn" type="button" data-abrir="modal-votacion">Crear votación</button>
+                </header>
+
+                <ul class="admin-lista admin-lista-votaciones">
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <div class="admin-item-titulo">
+                                <h3>Rey Profesional 2027</h3>
+                                <span class="admin-estado admin-estado-activa">Activa</span>
+                            </div>
+                            <p>Elige el intérprete profesional que mejor representa la tradición vallenata.</p>
+                            <span class="admin-chip">Categoría: Rey Profesional</span>
+                            <span class="admin-chip">Cierra el 12 de junio de 2027</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-votacion">Editar</button>
+                            <button class="btn-secundario admin-btn-sm" type="button" data-estado="Cerrada">Cerrar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Profesional 2027">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <div class="admin-item-titulo">
+                                <h3>Rey Aficionado 2027</h3>
+                                <span class="admin-estado admin-estado-programada">Programada</span>
+                            </div>
+                            <p>Votación para aficionados inscritos en la edición 2027.</p>
+                            <span class="admin-chip">Categoría: Rey Aficionado</span>
+                            <span class="admin-chip">Inicia el 01 de junio de 2027</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-votacion">Editar</button>
+                            <button class="btn-secundario admin-btn-sm" type="button" data-estado="Activa">Activar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Aficionado 2027">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <div class="admin-item-info">
+                            <div class="admin-item-titulo">
+                                <h3>Rey Infantil 2026</h3>
+                                <span class="admin-estado admin-estado-cerrada">Cerrada</span>
+                            </div>
+                            <p>Votación finalizada para la categoría infantil.</p>
+                            <span class="admin-chip">Categoría: Rey Infantil</span>
+                            <span class="admin-chip">Cerró el 12 de junio de 2026</span>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-votacion">Editar</button>
+                            <button class="btn-secundario admin-btn-sm" type="button" data-estado="Programada">Programar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Rey Infantil 2026">Eliminar</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="admin-empty" hidden>
+                    <p>No hay votaciones creadas todavía.</p>
+                    <button class="btn" type="button" data-abrir="modal-votacion">Crear la primera votación</button>
+                </div>
+            </section>
+
+            <!-- ============ GESTIÓN DE OPCIONES ============ -->
+            <section id="tab-opciones" class="admin-panel-tab" role="tabpanel" aria-label="Gestión de opciones" hidden>
+                <header class="admin-section-head">
+                    <div>
+                        <h2>Gestión de opciones</h2>
+                        <p>Administra las opciones (candidatos) disponibles dentro de cada votación.</p>
+                    </div>
+                </header>
+
+                <div class="admin-selector">
+                    <label for="opciones-votacion">Votación</label>
+                    <select class="form-control admin-select" id="opciones-votacion">
+                        <option selected>Rey Profesional 2027</option>
+                        <option>Rey Aficionado 2027</option>
+                        <option>Rey Infantil 2026</option>
+                    </select>
+                    <button class="btn" type="button" data-abrir="modal-opcion">Añadir opción</button>
+                </div>
+
+                <ul class="admin-lista admin-lista-opciones">
+                    <li class="admin-item">
+                        <img class="admin-item-foto" src="/img/music.png" alt="Foto de Mateo Guerrero">
+                        <div class="admin-item-info">
+                            <h3>Mateo Guerrero</h3>
+                            <p>Vallenato moderno · Marimba</p>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-opcion">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Mateo Guerrero">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <img class="admin-item-foto" src="/img/music2.png" alt="Foto de Felipe Andrajo">
+                        <div class="admin-item-info">
+                            <h3>Felipe Andrajo</h3>
+                            <p>Vallenato clásico · Acordeón</p>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-opcion">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Felipe Andrajo">Eliminar</button>
+                        </div>
+                    </li>
+                    <li class="admin-item">
+                        <img class="admin-item-foto" src="/img/music.png" alt="Foto de Samuel Quintero">
+                        <div class="admin-item-info">
+                            <h3>Samuel Quintero</h3>
+                            <p>Vallenato tradicional · Caja vallenata</p>
+                        </div>
+                        <div class="admin-acciones">
+                            <button class="btn-secundario admin-btn-sm" type="button" data-abrir="modal-opcion">Editar</button>
+                            <button class="admin-btn-peligro admin-btn-sm" type="button" data-eliminar data-nombre="Samuel Quintero">Eliminar</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="admin-empty" hidden>
+                    <p>Esta votación no tiene opciones registradas.</p>
+                    <button class="btn" type="button" data-abrir="modal-opcion">Añadir la primera opción</button>
+                </div>
+            </section>
+
+            <!-- ============ CONSULTA DE RESULTADOS ============ -->
+            <section id="tab-resultados" class="admin-panel-tab" role="tabpanel" aria-label="Consulta de resultados" hidden>
+                <header class="admin-section-head">
+                    <div>
+                        <h2>Consulta de resultados</h2>
+                        <p>Revisa los totales por opción y el porcentaje de participación de cada votación.</p>
+                    </div>
+                </header>
+
+                <div class="admin-selector">
+                    <label for="resultados-votacion">Votación</label>
+                    <select class="form-control admin-select" id="resultados-votacion">
+                        <option selected>Rey Profesional 2027</option>
+                        <option>Rey Aficionado 2027</option>
+                        <option>Rey Infantil 2026</option>
+                    </select>
+                </div>
+
+                <article class="resultado-card admin-resultado">
+                    <header class="resultado-header">
+                        <span class="admin-estado admin-estado-activa">Activa</span>
+                        <h3>Rey Profesional 2027</h3>
+                        <p>1.284 votos registrados · 1.784 personas habilitadas</p>
+                    </header>
+
+                    <ol class="resultado-lista">
+                        <li class="resultado-item primero">
+                            <span class="resultado-puesto">1</span>
+                            <div class="resultado-datos">
+                                <span class="resultado-nombre">Mateo Guerrero</span>
+                                <div class="resultado-barra">
+                                    <div class="resultado-barra-fill destacada" style="width: 78%;"></div>
+                                </div>
+                            </div>
+                            <div class="resultado-valor">
+                                <span class="resultado-porcentaje">78.4%</span>
+                                <span class="resultado-votos">1.007 votos</span>
+                            </div>
+                        </li>
+                        <li class="resultado-item">
+                            <span class="resultado-puesto">2</span>
+                            <div class="resultado-datos">
+                                <span class="resultado-nombre">Felipe Andrajo</span>
+                                <div class="resultado-barra">
+                                    <div class="resultado-barra-fill" style="width: 54%;"></div>
+                                </div>
+                            </div>
+                            <div class="resultado-valor">
+                                <span class="resultado-porcentaje">9.1%</span>
+                                <span class="resultado-votos">117 votos</span>
+                            </div>
+                        </li>
+                        <li class="resultado-item">
+                            <span class="resultado-puesto">3</span>
+                            <div class="resultado-datos">
+                                <span class="resultado-nombre">Samuel Quintero</span>
+                                <div class="resultado-barra">
+                                    <div class="resultado-barra-fill" style="width: 41%;"></div>
+                                </div>
+                            </div>
+                            <div class="resultado-valor">
+                                <span class="resultado-porcentaje">5.6%</span>
+                                <span class="resultado-votos">72 votos</span>
+                            </div>
+                        </li>
+                        <li class="resultado-item">
+                            <span class="resultado-puesto">4</span>
+                            <div class="resultado-datos">
+                                <span class="resultado-nombre">Jhoan Cano</span>
+                                <div class="resultado-barra">
+                                    <div class="resultado-barra-fill" style="width: 30%;"></div>
+                                </div>
+                            </div>
+                            <div class="resultado-valor">
+                                <span class="resultado-porcentaje">4.0%</span>
+                                <span class="resultado-votos">51 votos</span>
+                            </div>
+                        </li>
+                        <li class="resultado-item">
+                            <span class="resultado-puesto">5</span>
+                            <div class="resultado-datos">
+                                <span class="resultado-nombre">Mar Soundsystem</span>
+                                <div class="resultado-barra">
+                                    <div class="resultado-barra-fill" style="width: 20%;"></div>
+                                </div>
+                            </div>
+                            <div class="resultado-valor">
+                                <span class="resultado-porcentaje">2.9%</span>
+                                <span class="resultado-votos">37 votos</span>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <dl class="resultado-total">
+                        <div class="resultado-dato">
+                            <dt>Total de votos</dt>
+                            <dd>1.284</dd>
+                        </div>
+                        <div class="resultado-dato">
+                            <dt>Participación</dt>
+                            <dd>72%</dd>
+                        </div>
+                        <div class="resultado-dato">
+                            <dt>Última actualización</dt>
+                            <dd>04 de octubre de 2026, 2:35 PM</dd>
+                        </div>
+                    </dl>
+                </article>
+                <div class="admin-empty" hidden>
+                    <p>Selecciona una votación con votos registrados para ver sus resultados.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- ============ MODALES ============ -->
+        <div class="admin-modal" id="modal-categoria" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="titulo-categoria">
+            <div class="admin-modal-backdrop"></div>
+            <div class="admin-modal-card">
+                <header class="admin-modal-head">
+                    <h2 id="titulo-categoria">Categoría</h2>
+                    <button class="admin-modal-cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+                </header>
+                <form class="admin-form">
+                    <div class="admin-fields">
+                        <label for="cat-nombre">Nombre</label>
+                        <input class="form-control" id="cat-nombre" name="nombre" type="text" placeholder="Ej: Rey Profesional" required>
+
+                        <label for="cat-desc">Descripción</label>
+                        <textarea class="form-control" id="cat-desc" name="descripcion" rows="3" placeholder="Describe brevemente la categoría"></textarea>
+                    </div>
+                    <footer class="admin-modal-actions">
+                        <button class="btn-secundario" type="button" data-cerrar>Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </footer>
+                </form>
+            </div>
+        </div>
+
+        <div class="admin-modal" id="modal-votacion" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="titulo-votacion">
+            <div class="admin-modal-backdrop"></div>
+            <div class="admin-modal-card">
+                <header class="admin-modal-head">
+                    <h2 id="titulo-votacion">Votación</h2>
+                    <button class="admin-modal-cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+                </header>
+                <form class="admin-form">
+                    <div class="admin-fields">
+                        <label for="vot-nombre">Nombre</label>
+                        <input class="form-control" id="vot-nombre" name="nombre" type="text" placeholder="Ej: Rey Profesional 2027" required>
+
+                        <label for="vot-categoria">Categoría</label>
+                        <select class="form-control" id="vot-categoria" name="categoria" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option>Rey Profesional</option>
+                            <option>Rey Aficionado</option>
+                            <option>Rey Infantil</option>
+                            <option>Rey Juvenil</option>
+                        </select>
+
+                        <label for="vot-desc">Descripción</label>
+                        <textarea class="form-control" id="vot-desc" name="descripcion" rows="3" placeholder="Describe la votación"></textarea>
+
+                        <label for="vot-inicio">Fecha de inicio</label>
+                        <input class="form-control" id="vot-inicio" name="inicio" type="datetime-local">
+
+                        <label for="vot-cierre">Fecha de cierre</label>
+                        <input class="form-control" id="vot-cierre" name="cierre" type="datetime-local">
+
+                        <label for="vot-estado">Estado</label>
+                        <select class="form-control" id="vot-estado" name="estado">
+                            <option>Programada</option>
+                            <option>Activa</option>
+                            <option>Cerrada</option>
+                        </select>
+                    </div>
+                    <footer class="admin-modal-actions">
+                        <button class="btn-secundario" type="button" data-cerrar>Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </footer>
+                </form>
+            </div>
+        </div>
+
+        <div class="admin-modal" id="modal-opcion" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="titulo-opcion">
+            <div class="admin-modal-backdrop"></div>
+            <div class="admin-modal-card">
+                <header class="admin-modal-head">
+                    <h2 id="titulo-opcion">Opción</h2>
+                    <button class="admin-modal-cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+                </header>
+                <form class="admin-form">
+                    <div class="admin-fields">
+                        <label for="opc-nombre">Nombre</label>
+                        <input class="form-control" id="opc-nombre" name="nombre" type="text" placeholder="Ej: Mateo Guerrero" required>
+
+                        <label for="opc-genero">Género o descripción</label>
+                        <input class="form-control" id="opc-genero" name="genero" type="text" placeholder="Ej: Vallenato moderno · Marimba">
+
+                        <label for="opc-foto">Foto</label>
+                        <input class="form-control" id="opc-foto" name="foto" type="text" placeholder="/img/music.png">
+                    </div>
+                    <footer class="admin-modal-actions">
+                        <button class="btn-secundario" type="button" data-cerrar>Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </footer>
+                </form>
+            </div>
+        </div>
+
+        <div class="admin-modal" id="modal-eliminar" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="titulo-eliminar">
+            <div class="admin-modal-backdrop"></div>
+            <div class="admin-modal-card admin-modal-peligro">
+                <header class="admin-modal-head">
+                    <h2 id="titulo-eliminar">Confirmar eliminación</h2>
+                    <button class="admin-modal-cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+                </header>
+                <p class="admin-modal-texto" id="eliminar-texto">¿Seguro que deseas eliminar este elemento?</p>
+                <footer class="admin-modal-actions">
+                    <button class="btn-secundario" type="button" data-cerrar>Cancelar</button>
+                    <button class="admin-btn-peligro" type="button" id="eliminar-confirmar">Eliminar</button>
+                </footer>
+            </div>
+        </div>
+
+        <div class="admin-toast" id="admin-toast" role="status" aria-live="polite"></div>
+
+        <footer class="footer-var">
+            <header class="footer-header">
+                <div class="footer-content">
+                    <nav class="footer-nav">
+                        <ul class="footer-menu">
+                            <li class="footer-item"><a href="/templates/index.html">Inicio</a></li>
+                            <li class="footer-item"><a href="/templates/public/categorias.html">Categorías</a></li>
+                            <li class="footer-item"><a href="/templates/public/votaciones.html">Votar</a></li>
+                            <li class="footer-item"><a href="/templates/public/resultados.html">Resultados</a></li>
+                            <li class="footer-item footer-item-activo"><a href="/templates/public/perfil.html">Perfil</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        </footer>
+    </div>
+
+    <script>
+        (function () {
+            var tabs = document.querySelectorAll('.admin-tab');
+            var panels = document.querySelectorAll('.admin-panel-tab');
+
+            function activarTab(id) {
+                tabs.forEach(function (t) {
+                    var activo = t.dataset.tab === id;
+                    t.classList.toggle('activo', activo);
+                    t.setAttribute('aria-selected', activo ? 'true' : 'false');
+                });
+                panels.forEach(function (p) {
+                    var activo = p.id === 'tab-' + id;
+                    p.classList.toggle('activo', activo);
+                    p.hidden = !activo;
+                });
+            }
+
+            tabs.forEach(function (t) {
+                t.addEventListener('click', function () { activarTab(t.dataset.tab); });
+            });
+
+            function abrirModal(id) {
+                var modal = document.getElementById(id);
+                if (!modal) return;
+                modal.classList.add('abierto');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('sin-scroll');
+            }
+
+            function cerrarModal(modal) {
+                if (!modal) return;
+                modal.classList.remove('abierto');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('sin-scroll');
+            }
+
+            document.querySelectorAll('[data-abrir]').forEach(function (b) {
+                b.addEventListener('click', function () { abrirModal(b.dataset.abrir); });
+            });
+
+            document.querySelectorAll('[data-cerrar]').forEach(function (b) {
+                b.addEventListener('click', function () { cerrarModal(b.closest('.admin-modal')); });
+            });
+
+            document.querySelectorAll('.admin-modal-backdrop').forEach(function (bd) {
+                bd.addEventListener('click', function () { cerrarModal(bd.closest('.admin-modal')); });
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.admin-modal.abierto').forEach(cerrarModal);
+                }
+            });
+
+            var toastTimer;
+            function mostrarToast(mensaje) {
+                var t = document.getElementById('admin-toast');
+                t.textContent = mensaje;
+                t.classList.add('visible');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () { t.classList.remove('visible'); }, 2600);
+            }
+
+            document.querySelectorAll('.admin-form').forEach(function (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    cerrarModal(form.closest('.admin-modal'));
+                    mostrarToast('Cambios guardados correctamente.');
+                });
+            });
+
+            var pendiente = null;
+
+            document.querySelectorAll('[data-eliminar]').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    pendiente = b;
+                    document.getElementById('eliminar-texto').textContent =
+                        '¿Seguro que deseas eliminar "' + b.dataset.nombre + '"? Esta acción no se puede deshacer.';
+                    abrirModal('modal-eliminar');
+                });
+            });
+
+            document.getElementById('eliminar-confirmar').addEventListener('click', function () {
+                if (pendiente) {
+                    var item = pendiente.closest('.admin-item');
+                    var lista = pendiente.closest('.admin-lista');
+                    if (item) item.remove();
+                    mostrarToast('Elemento eliminado.');
+                    verificarVacio(lista);
+                    pendiente = null;
+                }
+                cerrarModal(document.getElementById('modal-eliminar'));
+            });
+
+            function verificarVacio(lista) {
+                if (!lista) return;
+                var vacio = lista.parentElement.querySelector('.admin-empty');
+                if (vacio) vacio.hidden = lista.children.length > 0;
+            }
+
+            document.querySelectorAll('.admin-lista').forEach(verificarVacio);
+
+            document.querySelectorAll('[data-estado]').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    var item = b.closest('.admin-item');
+                    var chip = item.querySelector('.admin-estado');
+                    var nuevo = b.dataset.estado;
+                    chip.className = 'admin-estado admin-estado-' + nuevo.toLowerCase();
+                    chip.textContent = nuevo;
+                    mostrarToast('Votación marcada como ' + nuevo.toLowerCase() + '.');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

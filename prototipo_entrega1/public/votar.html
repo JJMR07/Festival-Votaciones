@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dotcument</title>
+    <link rel="stylesheet" href="/Styles.css">
+</head>
+<body>
+    <div class="content-votar">
+        <nav class="volver-atras">
+            <a href="/templates/public/detalles-votacion.html">
+                <span>Volver a los detalles</span>
+            </a>
+        </nav>
+
+        <section class="votar-section">
+            <header class="votar-header">
+                <span>Activa</span>
+                <h1>Elige a tu candidato</h1>
+                <p>Categoría Rey profesional 2026. Puedes marcar una sola opción</p>
+            </header>
+
+            <form action="" class="votar-form">
+                <fieldset class="opciones-lista">
+                    <legend class="opciones-legend">Candidatos inscritos</legend>
+
+                    <label class="opcion-voto" for="candidato-1">
+                        <input type="radio" name="candidato" id="candidato-1" required >
+                        <span class="opcion-radio"></span>
+                        <img class="opcion-foto" src="/img/music.png" alt="foto">
+                        <span class="opcion-dato">
+                            <span class="opcion-nombre">Mateo guerrero</span>
+                            <span class="opcion-genero">Vallenato moderno - Marimba</span>
+                        </span>
+                    </label>
+                    <label class="opcion-voto" for="candidato-2">
+                        <input type="radio" name="candidato" id="candidato-2" required >
+                        <span class="opcion-radio"></span>
+                        <img class="opcion-foto" src="/img/music.png" alt="foto">
+                        <span class="opcion-dato">
+                            <span class="opcion-nombre">Felipe andrajo</span>
+                            <span class="opcion-genero">Vallenato moderno - Marimba</span>
+                        </span>
+                    </label>
+                    <label class="opcion-voto" for="candidato-3">
+                        <input type="radio" name="candidato" id="candidato-3" required >
+                        <span class="opcion-radio"></span>
+                        <img class="opcion-foto" src="/img/music.png" alt="foto">
+                        <span class="opcion-dato">
+                            <span class="opcion-nombre">Samuel Quinterop</span>
+                            <span class="opcion-genero">Vallenato moderno - Marimba</span>
+                        </span>
+                    </label>
+                    <label class="opcion-voto" for="candidato-4">
+                        <input type="radio" name="candidato" id="candidato-4" required >
+                        <span class="opcion-radio"></span>
+                        <img class="opcion-foto" src="/img/music.png" alt="foto">
+                        <span class="opcion-dato">
+                            <span class="opcion-nombre">Sebastian gales</span>
+                            <span class="opcion-genero">Vallenato moderno - Marimba</span>
+                        </span>
+                    </label>
+                </fieldset>
+
+                <footer class="votar-actions">
+                    <button class="votar-submit"><a href="/templates/public/confirmacion-voto.html">Confirmar mi voto</a></button>
+                    <a href="/templates/public/detalles-votacion.html" class="btn-secundario">Cancelar</a>
+                </footer>
+            </form>
+             
+        </section>
+
+    </div>
+    
+</body>
+</html>

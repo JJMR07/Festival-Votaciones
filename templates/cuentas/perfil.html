@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Mi perfil{% endblock %}
+
+{% block content %}
+<nav class="volver-atras">
+    <a href="{% url 'catalogo:inicio' %}"><span>Página inicio</span></a>
+</nav>
+
+<main class="main-content">
+    <section class="admin-hero">
+        <div class="admin-hero-texto">
+            <span class="admin-badge">{% if user.is_staff %}Administrador{% else %}Usuario{% endif %}</span>
+            <h1>Mi perfil</h1>
+            <p>Consulta los datos de tu cuenta en la plataforma de votaciones del Festival Vallenato.</p>
+        </div>
+        <a href="{% url 'catalogo:inicio' %}" class="btn-secundario">Volver al sitio</a>
+    </section>
+
+    <article class="perfil-card">
+        <h2>Datos de la cuenta</h2>
+        <dl class="perfil-datos">
+            <div class="perfil-dato">
+                <dt>Usuario</dt>
+                <dd>{{ user.username }}</dd>
+            </div>
+            <div class="perfil-dato">
+                <dt>Correo</dt>
+                <dd>{{ user.email|default:"—" }}</dd>
+            </div>
+            <div class="perfil-dato">
+                <dt>Nombre</dt>
+                <dd>{{ user.get_full_name|default:user.first_name|default:"—" }}</dd>
+            </div>
+            <div class="perfil-dato">
+                <dt>Registro</dt>
+                <dd>{{ user.date_joined|date:"d/m/Y H:i" }}</dd>
+            </div>
+            <div class="perfil-dato">
+                <dt>Tipo de cuenta</dt>
+                <dd>{% if user.is_superuser %}Superusuario{% elif user.is_staff %}Staff{% else %}Usuario{% endif %}</dd>
+            </div>
+        </dl>
+
+        <div class="perfil-acciones">
+            {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}" class="btn">Panel de administrador</a>
+            {% endif %}
+            <a href="{% url 'catalogo:votaciones' %}" class="btn">Ver votaciones</a>
+            <form method="post" action="{% url 'cuentas:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </article>
+</main>
+{% endblock %}
