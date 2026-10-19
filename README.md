@@ -1,134 +1,231 @@
-# Sistema web de votaciones — Festival de la Leyenda Vallenata 2027
+<div align="center">
 
-Proyecto universitario de Desarrollo Web (Fundación Universitaria del Área Andina).  
-**Entrega 2:** proyecto Django ejecutable, modelos relacionados en PostgreSQL, autenticación y consulta pública.
+<img src="static/img/logo.png" alt="Festival de la Leyenda Vallenata" width="150">
 
-Estructura de negocio: **Edición → Categoría → Votación → Opción**.  
-El registro definitivo de votos, duplicados, elegibilidad, resultados finales y despliegue **no** forman parte de esta entrega.
+# Sistema de votaciones
+### Festival de la Leyenda Vallenata · Edición 2027
 
-## Inicio rápido (Windows)
+Aplicación web académica para explorar categorías y votaciones del festival,<br>
+con catálogo conectado a PostgreSQL y cuentas de usuario gestionadas con Django.
 
-**Doble clic a `iniciar_proyecto.bat`.** Ese archivo:
+<p>
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/Django-4.2%20LTS-092E20?logo=django&logoColor=white" alt="Django 4.2 LTS">
+  <img src="https://img.shields.io/badge/PostgreSQL-12%2B-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL 12 o superior">
+  <img src="https://img.shields.io/badge/Interfaz-espa%C3%B1ol-F2C14E" alt="Interfaz en español">
+</p>
 
-1. Enciende PostgreSQL (si estaba apagado).
-2. Activa el entorno virtual.
-3. Enciende el servidor y abre <http://127.0.0.1:8000/> en el navegador.
+[Explorar el proyecto](#-el-proyecto) ·
+[Instalar](#-instalación-en-windows) ·
+[Abrir páginas](#-rutas-disponibles) ·
+[Consultar documentación](#-documentación)
 
-Para **apagarlo**: presione `Ctrl + C` en la ventana negra (o ciérrela).
+</div>
 
-> Si ya tenía PostgreSQL encendido no pasa nada: el script lo detecta y lo reutiliza.
-> Si prefiere hacerlo a mano, vea las secciones 1–3 más abajo.
+---
 
-## Requisitos
+## ✨ El proyecto
 
-- Windows 10 (también funciona en otros sistemas con Python y PostgreSQL)
-- Python 3.12
-- PostgreSQL 12 o superior (en este equipo se instaló **PostgreSQL 17** con Scoop: `scoop install postgresql`)
-- Django **4.2 LTS** (fijado en `requirements.txt`)
+Este proyecto convierte el prototipo inicial en una aplicación Django ejecutable. Permite consultar información organizada por edición, categoría, votación y opción; registrarse e iniciar sesión; y administrar el catálogo desde Django Admin.
 
-## 1. Entorno virtual
+> **Estado de esta entrega:** el sitio consulta y presenta información, pero **no registra votos ni calcula resultados oficiales**. Los datos generados por el comando de demostración son de prueba.
 
-En la carpeta del proyecto:
+### En un vistazo
+
+| | |
+|:--|:--|
+| **Aplicación** | Sistema web para explorar votaciones del Festival de la Leyenda Vallenata |
+| **Tecnologías** | Python 3.12 · Django 4.2 LTS · PostgreSQL |
+| **Idioma y zona horaria** | Español (Colombia) · `America/Bogota` |
+| **Tipo de proyecto** | Proyecto académico — Entrega 2 |
+| **Plataforma recomendada** | Windows 10 o superior |
+
+### Recorrido de la información
+
+```mermaid
+flowchart LR
+    E[Edición] --> C[Categorías]
+    C --> V[Votaciones]
+    V --> O[Opciones]
+    U[Visitante] --> W[Páginas públicas]
+    W --> D[(PostgreSQL)]
+    A[Administración Django] --> D
+    R[Registro e inicio de sesión] --> U
+```
+
+## 🧭 Navegación
+
+- [El proyecto](#-el-proyecto)
+- [Funciones incluidas y pendientes](#-funciones-incluidas-y-pendientes)
+- [Instalación en Windows](#-instalación-en-windows)
+- [Inicio rápido](#-inicio-rápido)
+- [Rutas disponibles](#-rutas-disponibles)
+- [Estructura del código](#-estructura-del-código)
+- [Pruebas](#-pruebas)
+- [Documentación](#-documentación)
+- [Seguridad y configuración](#-seguridad-y-configuración)
+
+## ✅ Funciones incluidas y pendientes
+
+<details open>
+<summary><strong>Incluido en esta entrega</strong></summary>
+
+- Páginas públicas de inicio, categorías, votaciones, detalle y resultados.
+- Lectura de datos desde PostgreSQL mediante el ORM de Django.
+- Relaciones del catálogo: **Edición → Categoría → Votación → Opción**.
+- Registro, inicio y cierre de sesión, y página de perfil.
+- Administración del catálogo desde Django Admin.
+- Comando para cargar datos de demostración.
+
+</details>
+
+<details>
+<summary><strong>Aún no implementado</strong></summary>
+
+- Registro o almacenamiento de votos.
+- Prevención de votos duplicados o reglas de elegibilidad.
+- Resultados oficiales o auditoría electoral.
+- Despliegue en un servidor público.
+
+</details>
+
+## 🛠️ Instalación en Windows
+
+### Requisitos
+
+- [Python 3.12](https://www.python.org/downloads/) y el lanzador `py`.
+- [PostgreSQL 12 o superior](https://www.postgresql.org/download/). El desarrollo del proyecto se documentó con PostgreSQL 17.
+- Git, para clonar el repositorio.
+
+### 1. Obtener el proyecto y preparar el entorno
+
+Abre PowerShell y ejecuta:
 
 ```powershell
+git clone https://github.com/JJMR07/Festival-Votaciones.git
+cd Festival-Votaciones
+
 py -3.12 -m venv venv
 .\venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Resultado esperado: el prompt muestra `(venv)` y se instalan Django, psycopg2-binary y python-dotenv.
+Si PowerShell bloquea la activación del entorno virtual, consulta la [documentación de políticas de ejecución de PowerShell](https://learn.microsoft.com/powershell/module/microsoft.powershell.security/set-executionpolicy). Como alternativa, puedes ejecutar los comandos usando `venv\Scripts\python.exe` sin activar el entorno.
 
-## 2. PostgreSQL
+### 2. Crear la base de datos
 
-1. Inicia el servidor de bases de datos (Scoop agrega `pg_ctl` al PATH):
-
-```powershell
-pg_ctl start
-```
-
-2. Crea la base de datos (el superusuario por defecto es `postgres`; te pedirá la contraseña):
+Inicia PostgreSQL desde sus servicios o desde la consola y crea la base:
 
 ```powershell
 createdb -U postgres votaciones_festival
 ```
 
-3. (Opcional) Para que PostgreSQL arranque junto con Windows, registra el servicio desde una consola elevada:
+Si `createdb` no está en el `PATH`, ejecuta `createdb.exe` desde la carpeta `bin` de PostgreSQL. Si la base ya existe, no es necesario crearla de nuevo.
 
-```powershell
-pg_ctl register -N PostgreSQL
-```
-
-Resultado esperado: la base `votaciones_festival` aparece al listar bases de datos (`psql -U postgres -c "\l"`).
-
-Para detener el servidor: `pg_ctl stop`.
-
-## 3. Variables de entorno
-
-Copia `.env.example` a `.env` (este último **no** se sube al repositorio):
+### 3. Configurar las variables de entorno
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Edita `.env` con tu usuario, contraseña y puerto de PostgreSQL (valores por defecto del proyecto: `postgres` / `postgres` / `5432`). Nunca pegues esas credenciales en el PDF ni en GitHub.
+Abre `.env` y ajusta los datos de conexión según tu instalación:
 
-## 4. Migraciones
+```dotenv
+SECRET_KEY=reemplazar-por-una-clave-secreta-larga
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
 
-```powershell
-python manage.py makemigrations
-python manage.py migrate
+DB_NAME=votaciones_festival
+DB_USER=postgres
+DB_PASSWORD=tu_contraseña_local
+DB_HOST=127.0.0.1
+DB_PORT=5432
 ```
 
-Resultado esperado: tablas de Django (usuarios, sesiones, admin) y tablas `catalogo_edicion`, `catalogo_categoria`, `catalogo_votacion`, `catalogo_opcion` creadas en PostgreSQL.
-
-## 5. Administrador y datos de prueba
+### 4. Preparar las tablas y los datos
 
 ```powershell
+python manage.py migrate
 python manage.py createsuperuser
 python manage.py cargar_datos_prueba
 ```
 
-Resultado esperado: puedes entrar a `http://127.0.0.1:8000/admin/` y ver una edición 2027, cuatro categorías, votaciones y opciones de demostración.
+El último comando carga contenido de demostración para explorar el catálogo; puede ejecutarse más de una vez.
 
-## 6. Servidor de desarrollo
+### 5. Ejecutar el servidor
 
 ```powershell
 python manage.py runserver
 ```
 
-- Pública: http://127.0.0.1:8000/
-- Categorías: http://127.0.0.1:8000/categorias/
-- Votaciones: http://127.0.0.1:8000/votaciones/
-- Registro: http://127.0.0.1:8000/cuentas/registro/
-- Login: http://127.0.0.1:8000/cuentas/login/
-- Admin: http://127.0.0.1:8000/admin/
+Abre [http://127.0.0.1:8000/](http://127.0.0.1:8000/) en tu navegador. Para detener el servidor, pulsa `Ctrl+C` en PowerShell.
 
-## 7. Pruebas
+## ⚡ Inicio rápido
+
+En Windows, después de completar la instalación, también puedes ejecutar `iniciar_proyecto.bat` con doble clic. El script intenta iniciar PostgreSQL desde la ubicación de Scoop, activa la carpeta virtual `venv` e inicia Django.
+
+> **Nota:** el archivo `.bat` está preparado para una instalación local con PostgreSQL administrado por Scoop. Si usas otra instalación, inicia PostgreSQL por separado y ejecuta `python manage.py runserver` desde el entorno virtual.
+
+## 🌐 Rutas disponibles
+
+| Página | URL |
+|:--|:--|
+| Inicio | [http://127.0.0.1:8000/](http://127.0.0.1:8000/) |
+| Categorías | [http://127.0.0.1:8000/categorias/](http://127.0.0.1:8000/categorias/) |
+| Votaciones | [http://127.0.0.1:8000/votaciones/](http://127.0.0.1:8000/votaciones/) |
+| Detalle de votación | `/votaciones/<id>/` |
+| Resultados de demostración | [http://127.0.0.1:8000/resultados/](http://127.0.0.1:8000/resultados/) |
+| Registro | [http://127.0.0.1:8000/cuentas/registro/](http://127.0.0.1:8000/cuentas/registro/) |
+| Iniciar sesión | [http://127.0.0.1:8000/cuentas/login/](http://127.0.0.1:8000/cuentas/login/) |
+| Perfil | [http://127.0.0.1:8000/cuentas/perfil/](http://127.0.0.1:8000/cuentas/perfil/) |
+| Administración | [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) |
+
+## 🧩 Estructura del código
+
+```text
+catalogo/      Modelos, vistas, rutas y administración del catálogo
+cuentas/       Registro, autenticación, perfil y cierre de sesión
+config/        Configuración del proyecto y rutas principales
+templates/     Plantillas HTML de las páginas
+static/        CSS, JavaScript e imágenes
+prototipo_entrega1/  Prototipo HTML de referencia de la entrega anterior
+docs/          Documentación técnica y material de entrega
+manage.py      Herramienta de administración de Django
+requirements.txt    Dependencias Python del proyecto
+```
+
+El proyecto sigue el patrón **MVT** de Django:
+
+1. **Modelo:** define los datos y sus relaciones en `catalogo/models.py`.
+2. **Vista:** consulta datos o gestiona autenticación en `catalogo/views.py` y `cuentas/views.py`.
+3. **Plantilla:** presenta las páginas HTML desde `templates/`.
+
+## 🧪 Pruebas
+
+Con el entorno virtual activo, PostgreSQL iniciado y `.env` configurado:
 
 ```powershell
 python manage.py test
 ```
 
-Resultado esperado: pruebas de modelos, páginas públicas y autenticación en verde.
+## 📚 Documentación
 
-## Estructura Django (MVT)
+- [Documento técnico](docs/DOCUMENTO_TECNICO.md): arquitectura, configuración, modelos, autenticación y solución de problemas.
+- [Documento de Entrega 2](docs/ENTREGA_2.md): alcance académico y descripción de la implementación.
 
-| Pieza | Dónde está | Para qué sirve |
-| --- | --- | --- |
-| Modelo | `catalogo/models.py` | Tablas y relaciones en PostgreSQL |
-| Vista | `catalogo/views.py`, `cuentas/views.py` | Lógica: consultar datos o autenticar |
-| Plantilla | `templates/` | HTML responsive (prototipo + Bootstrap) |
-| Rutas | `config/urls.py`, `catalogo/urls.py`, `cuentas/urls.py` | URLs |
-| Admin | `catalogo/admin.py` | CRUD de ediciones, categorías, votaciones y opciones |
-| Estáticos | `static/css/styles.css`, `static/js/app.js` | CSS del prototipo y un JS mínimo |
+## 🔐 Seguridad y configuración
 
-El prototipo HTML de la Entrega 1 quedó en `prototipo_entrega1/` como referencia visual.
+- No subas `.env`, contraseñas, claves secretas ni datos personales al repositorio.
+- Usa `DEBUG=True` únicamente en desarrollo local.
+- Antes de publicar el sistema, configura una clave secreta propia, `DEBUG=False`, `ALLOWED_HOSTS`, HTTPS y una base de datos segura.
+- Los datos de `cargar_datos_prueba` son ejemplos y no representan candidatos ni resultados oficiales.
 
-## Qué no incluye esta entrega
+---
 
-- Guardar votos
-- Impedir votos duplicados
-- Reglas de quién puede votar
-- Resultados oficiales
-- Auditoría y despliegue en un servidor público
+<div align="center">
+
+Hecho como proyecto académico de Desarrollo Web<br>
+**Fundación Universitaria del Área Andina · 2026**
+
+</div>
