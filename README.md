@@ -161,11 +161,15 @@ python manage.py runserver
 
 Abre [http://127.0.0.1:8000/](http://127.0.0.1:8000/) en tu navegador. Para detener el servidor, pulsa `Ctrl+C` en PowerShell.
 
-## ⚡ Inicio rápido
+## ⚙️ Inicio en otros entornos
 
-En Windows, después de completar la instalación, también puedes ejecutar `iniciar_proyecto.bat` con doble clic. El script intenta iniciar PostgreSQL desde la ubicación de Scoop, activa la carpeta virtual `venv` e inicia Django.
+El repositorio no incluye scripts de arranque ligados a una máquina o instalación específica. Configura PostgreSQL y el entorno de Python de acuerdo con tu sistema operativo, proveedor o plataforma de despliegue; luego configura `.env`, aplica las migraciones y ejecuta Django con el comando apropiado para ese entorno.
 
-> **Nota:** el archivo `.bat` está preparado para una instalación local con PostgreSQL administrado por Scoop. Si usas otra instalación, inicia PostgreSQL por separado y ejecuta `python manage.py runserver` desde el entorno virtual.
+Para desarrollo local, una vez que PostgreSQL esté disponible y el entorno virtual esté activo:
+
+```powershell
+python manage.py runserver
+```
 
 ## 🌐 Rutas disponibles
 

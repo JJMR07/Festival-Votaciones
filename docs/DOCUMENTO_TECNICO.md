@@ -165,7 +165,6 @@ Pagina-web---Sistema-de-votaciones-main/
 ├── .env                       🔒 Credenciales reales (NO se sube a Git)
 ├── .env.example               📋 Plantilla del .env para otros compañeros
 ├── README.md                  📋 Instrucciones de instalación y uso
-├── abrir_postgres.bat         🚀 Doble clic = abre PostgreSQL + psql conectado
 │
 ├── config/                    📦 El "proyecto" (contenedor)
 │   ├── settings.py            ⭐ Ajustes: base de datos, plantillas, idioma, etc.
@@ -334,7 +333,7 @@ Edicion 1 ──────n Categoria 1 ──────n Votacion 1 ──�
 ### ¿Cómo ver los datos?
 
 - **Opción gráfica:** Menú Inicio → **pgAdmin 4** → Servers → Add Server (`127.0.0.1:5432`, usuario `postgres`, contraseña `postgres`) → `votaciones_festival` → Schemas → public → Tables.
-- **Opción terminal:** doble clic a `abrir_postgres.bat` y ejecutar:
+- **Opción terminal:** conecta con `psql` usando las credenciales y el nombre de base configurados en `.env`:
   ```sql
   \dt                            -- lista tablas
   SELECT * FROM catalogo_categoria;
@@ -696,7 +695,7 @@ inicio y en las opciones del detalle, y el menú inferior completo (Resultados y
 
 ```powershell
 # ---------- ARRANQUE ----------
-pg_ctl start                                    # inicia PostgreSQL (o doble clic a abrir_postgres.bat)
+# Inicia PostgreSQL con el método correspondiente a tu sistema e instalación.
 python manage.py runserver                      # arranca el sitio en http://127.0.0.1:8000/
 
 # ---------- BASE DE DATOS ----------
@@ -737,7 +736,7 @@ py -3.12 -m venv venv
 pip install -r requirements.txt
 
 #2. PostgreSQL
-pg_ctl start                     # o doble clic a abrir_postgres.bat
+# Inicia PostgreSQL con el método correspondiente a tu sistema e instalación.
 
 #3. Base de datos (solo la primera vez)
 #    createdb -U postgres votaciones_festival
@@ -755,7 +754,7 @@ python manage.py runserver
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
-| `could not connect to server` | PostgreSQL apagado | `pg_ctl start` o doble clic a `abrir_postgres.bat` |
+| `could not connect to server` | PostgreSQL apagado o configuración incorrecta | Inicia PostgreSQL según tu instalación y revisa `DB_HOST` y `DB_PORT` en `.env` |
 | `password authentication failed` | Contraseña equivocada | `.env` debe decir `DB_PASSWORD=postgres` |
 | Página en blanco / datos vacíos | Base sin migrar o sin datos | `migrate` + `cargar_datos_prueba` |
 | `Static file not found` | Falta copiar imagen a `static/img/` | Copiarla y referenciarla con `{% static %}` |
