@@ -1,12 +1,13 @@
 from django.urls import path
 
-from .views import CierreSesionView, InicioSesionView, perfil, registro
+from config.frontend import index
+from .views import cerrar_sesion
 
 app_name = "cuentas"
 
 urlpatterns = [
-    path("registro/", registro, name="registro"),
-    path("login/", InicioSesionView.as_view(), name="login"),
-    path("logout/", CierreSesionView.as_view(), name="logout"),
-    path("perfil/", perfil, name="perfil"),
+    path("registro/", index, name="registro"),
+    path("login/", index, name="login"),
+    path("logout/", cerrar_sesion, name="logout"),
+    path("perfil/", index, name="perfil"),
 ]

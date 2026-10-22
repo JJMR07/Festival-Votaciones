@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ sitio.textos.descripcion_inicio }}">
+  <meta name="theme-color" content="#080809">
+  <title>{{ sitio.nombre }}</title>
+  <link rel="icon" href="{{ sitio.logo }}">
+  <script src="{% static 'js/theme-init.js' %}"></script>
+  {% for archivo in css %}<link rel="stylesheet" href="{{ archivo }}">{% endfor %}
+</head>
+<body>
+  <div id="root"></div>
+  {{ bootstrap|json_script:"app-bootstrap" }}
+  <noscript><p>Activa JavaScript para explorar {{ sitio.nombre }}.</p></noscript>
+  {% if script %}<script type="module" src="{{ script }}"></script>{% else %}
+  <p>Compila el frontend de React con el comando de compilación indicado en README.md.</p>
+  {% endif %}
+</body>
+</html>

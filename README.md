@@ -1,235 +1,185 @@
-<div align="center">
+# Festival · Catálogo configurable
 
-<img src="static/img/logo.png" alt="Festival de la Leyenda Vallenata" width="150">
+Aplicación con **React 19 + Vite**, **Django 5.2 LTS** y
+**PostgreSQL**. La interfaz pública anterior fue reemplazada por React;
+Django conserva las rutas, la plantilla de entrada, autenticación, ORM y Admin.
 
-# Sistema de votaciones
-### Festival de la Leyenda Vallenata · Edición 2027
-
-Aplicación web académica para explorar categorías y votaciones del festival,<br>
-con catálogo conectado a PostgreSQL y cuentas de usuario gestionadas con Django.
-
-<p>
-  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12">
-  <img src="https://img.shields.io/badge/Django-4.2%20LTS-092E20?logo=django&logoColor=white" alt="Django 4.2 LTS">
-  <img src="https://img.shields.io/badge/PostgreSQL-12%2B-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL 12 o superior">
-  <img src="https://img.shields.io/badge/Interfaz-espa%C3%B1ol-F2C14E" alt="Interfaz en español">
-</p>
-
-[Explorar el proyecto](#-el-proyecto) ·
-[Instalar](#-instalación-en-windows) ·
-[Abrir páginas](#-rutas-disponibles) ·
-[Consultar documentación](#-documentación)
-
-</div>
-
----
-
-## ✨ El proyecto
-
-Este proyecto convierte el prototipo inicial en una aplicación Django ejecutable. Permite consultar información organizada por edición, categoría, votación y opción; registrarse e iniciar sesión; y administrar el catálogo desde Django Admin.
-
-> **Estado de esta entrega:** el sitio consulta y presenta información, pero **no registra votos ni calcula resultados oficiales**. Los datos generados por el comando de demostración son de prueba.
-
-### En un vistazo
-
-| | |
-|:--|:--|
-| **Aplicación** | Sistema web para explorar votaciones del Festival de la Leyenda Vallenata |
-| **Tecnologías** | Python 3.12 · Django 4.2 LTS · PostgreSQL |
-| **Idioma y zona horaria** | Español (Colombia) · `America/Bogota` |
-| **Tipo de proyecto** | Proyecto académico — Entrega 2 |
-| **Plataforma recomendada** | Windows 10 o superior |
-
-### Recorrido de la información
-
-```mermaid
-flowchart LR
-    E[Edición] --> C[Categorías]
-    C --> V[Votaciones]
-    V --> O[Opciones]
-    U[Visitante] --> W[Páginas públicas]
-    W --> D[(PostgreSQL)]
-    A[Administración Django] --> D
-    R[Registro e inicio de sesión] --> U
-```
-
-## 🧭 Navegación
-
-- [El proyecto](#-el-proyecto)
-- [Funciones incluidas y pendientes](#-funciones-incluidas-y-pendientes)
-- [Instalación en Windows](#-instalación-en-windows)
-- [Inicio rápido](#-inicio-rápido)
-- [Rutas disponibles](#-rutas-disponibles)
-- [Estructura del código](#-estructura-del-código)
-- [Pruebas](#-pruebas)
-- [Documentación](#-documentación)
-- [Seguridad y configuración](#-seguridad-y-configuración)
-
-## ✅ Funciones incluidas y pendientes
-
-<details open>
-<summary><strong>Incluido en esta entrega</strong></summary>
-
-- Páginas públicas de inicio, categorías, votaciones, detalle y resultados.
-- Lectura de datos desde PostgreSQL mediante el ORM de Django.
-- Relaciones del catálogo: **Edición → Categoría → Votación → Opción**.
-- Registro, inicio y cierre de sesión, y página de perfil.
-- Administración del catálogo desde Django Admin.
-- Comando para cargar datos de demostración.
-
-</details>
-
-<details>
-<summary><strong>Aún no implementado</strong></summary>
-
-- Registro o almacenamiento de votos.
-- Prevención de votos duplicados o reglas de elegibilidad.
-- Resultados oficiales o auditoría electoral.
-- Despliegue en un servidor público.
-
-</details>
-
-## 🛠️ Instalación en Windows
-
-### Requisitos
-
-- [Python 3.12](https://www.python.org/downloads/) y el lanzador `py`.
-- [PostgreSQL 12 o superior](https://www.postgresql.org/download/). El desarrollo del proyecto se documentó con PostgreSQL 17.
-- Git, para clonar el repositorio.
-
-### 1. Obtener el proyecto y preparar el entorno
-
-Abre PowerShell y ejecuta:
+## Ejecutar en este equipo
 
 ```powershell
-git clone https://github.com/JJMR07/Festival-Votaciones.git
-cd Festival-Votaciones
-
-py -3.12 -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+.\iniciar.cmd
 ```
 
-Si PowerShell bloquea la activación del entorno virtual, consulta la [documentación de políticas de ejecución de PowerShell](https://learn.microsoft.com/powershell/module/microsoft.powershell.security/set-executionpolicy). Como alternativa, puedes ejecutar los comandos usando `venv\Scripts\python.exe` sin activar el entorno.
+Abre <http://127.0.0.1:8000/>. El comando inicia PostgreSQL local cuando sea
+necesario, aplica migraciones y compila React si falta el build o cambiaron
+las fuentes. Ctrl+C detiene el servidor Django.
 
-### 2. Crear la base de datos
+- Entorno Python: `.venv`.
+- PostgreSQL: `.local/pgsql`; datos persistentes en `.local/pgdata`.
+- Node.js 24 y pnpm 11.25.0 locales en `.local/node` y `.local/tools`.
+- Credenciales del administrador local: `.local/ACCESO_LOCAL.txt`.
+- Configuración de conexión: `.env`.
+- Estos archivos locales están excluidos de Git. No borres `pgdata`: contiene tus datos.
 
-Inicia PostgreSQL desde sus servicios o desde la consola y crea la base:
+## Configurar todo el contenido sin programar
+
+La apariencia sigue la referencia visual de [festivalvallenato.com](https://festivalvallenato.com/):
+Poppins en textos y navegación, Raleway en títulos, cabecera y pie negros,
+rojo institucional y acentos dorados. Las fuentes se sirven localmente.
+El botón redondo de la cabecera alterna entre **Claro** y **Oscuro**:
+el sol permite activar el modo claro y la luna activar el oscuro.
+La elección se conserva en el navegador; antes de elegir se respeta la
+preferencia del sistema operativo. Los formularios, filtros, tarjetas y perfil
+también cambian de tema. Los colores siguen siendo editables desde Admin.
+
+Entra a <http://127.0.0.1:8000/admin/> con tu usuario administrador.
+
+| Sección | Qué puedes editar |
+| --- | --- |
+| Configuración del sitio | Nombre, nombre corto, subtítulo, logo, portada, imagen de respaldo, colores y registro de cuentas |
+| Configuración → Textos de la interfaz | Títulos, descripciones, menús, botones, mensajes y pie de página, mediante campos de texto normales |
+| Ediciones | Nombre, año, descripción, imagen, orden y visibilidad |
+| Categorías | Nombre, descripción, edición, imagen, orden y publicación |
+| Votaciones | Título, descripción, categoría, fechas, imagen, orden y publicación |
+| Opciones | Nombre del participante, descripción, votación, imagen, orden y visibilidad |
+
+Las imágenes admiten URL `https://` o rutas de archivos existentes en `/static/`.
+Una imagen vacía en el catálogo utiliza la imagen de respaldo del sitio.
+No se admiten HTML ni scripts como contenido. Los colores aceptan `#RRGGBB`;
+elige un primario oscuro que mantenga contraste con el texto blanco.
+
+Al guardar, vuelve al sitio público: al recuperar el foco se actualizan
+configuración, sesión y catálogo. Recargar también obtiene los cambios.
+No hace falta reiniciar Django ni recompilar React para editar contenido.
+
+`orden` menor aparece primero. Los empates se resuelven por nombre y clave
+primaria. Ocultar una edición oculta sus categorías, votaciones y participantes;
+ocultar una categoría también oculta sus votaciones. La API y React aplican la
+misma política, incluso al abrir una URL de detalle directamente.
+
+La estructura de pantallas y las reglas de negocio son código: configurabilidad
+significa editar contenido, identidad y publicación, no ejecutar código arbitrario
+desde la base de datos. Cambiar estas reglas sigue requiriendo desarrollo y pruebas.
+
+## Funcionalidades incluidas
+
+- Catálogo de múltiples ediciones y categorías, con filtros y búsqueda.
+- Listados y participantes paginados; carga por demanda de opciones de filtros.
+- Registro, login, logout y perfil editable mediante sesiones reales de Django.
+- Protección CSRF, validación de contraseñas y permisos del administrador.
+- Estados de fecha calculados: publicado, próximo, en periodo y finalizado.
+- Diseño responsivo, navegación móvil, estados de carga, vacío y error.
+- Tipografías, CSS, JavaScript e imágenes predeterminadas servidos localmente.
+
+No se registran votos ni se inventan resultados. La página de resultados informa
+el alcance y enlaza los procesos publicados. Votos, elegibilidad, auditoría y
+despliegue productivo quedan fuera de esta segunda fase.
+
+## Instalar desde un clon nuevo
+
+Requisitos: Python 3.12, PostgreSQL 14 o posterior (probado con 17.11),
+Node.js 24 LTS y pnpm 11.25.0. Si no tienes pnpm, `npm install -g pnpm@11.25.0`.
 
 ```powershell
-createdb -U postgres votaciones_festival
-```
-
-Si `createdb` no está en el `PATH`, ejecuta `createdb.exe` desde la carpeta `bin` de PostgreSQL. Si la base ya existe, no es necesario crearla de nuevo.
-
-### 3. Configurar las variables de entorno
-
-```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Abre `.env` y ajusta los datos de conexión según tu instalación:
-
-```dotenv
-SECRET_KEY=reemplazar-por-una-clave-secreta-larga
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
-
-DB_NAME=votaciones_festival
-DB_USER=postgres
-DB_PASSWORD=tu_contraseña_local
-DB_HOST=127.0.0.1
-DB_PORT=5432
-```
-
-### 4. Preparar las tablas y los datos
+Edita `.env` con tu propia clave y conexión. No uses los valores de ejemplo
+como credenciales compartidas. Crea la base una sola vez con PostgreSQL iniciado:
 
 ```powershell
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py cargar_datos_prueba
+createdb -U postgres votaciones_festival
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py createsuperuser
+.\.venv\Scripts\python.exe manage.py cargar_datos_prueba
+cd frontend
+pnpm install --frozen-lockfile
+pnpm run build
+cd ..
+.\.venv\Scripts\python.exe manage.py runserver
 ```
 
-El último comando carga contenido de demostración para explorar el catálogo; puede ejecutarse más de una vez.
+`iniciar.cmd` corresponde a la instalación portátil preparada en este equipo.
+En otro equipo con PostgreSQL instalado como servicio, usa el arranque manual
+anterior; no necesitas copiar las carpetas `.local` o `.venv`.
 
-### 5. Ejecutar el servidor
+Los ejemplos son opcionales. Para demostrar otra edición:
 
 ```powershell
-python manage.py runserver
+.\.venv\Scripts\python.exe manage.py cargar_datos_prueba --anio 2026 --nombre "Festival de la Leyenda Vallenata"
 ```
 
-Abre [http://127.0.0.1:8000/](http://127.0.0.1:8000/) en tu navegador. Para detener el servidor, pulsa `Ctrl+C` en PowerShell.
+El comando no sobrescribe ni reactiva los registros existentes. Si cambias sus
+nombres y vuelves a ejecutarlo puede crear nuevos ejemplos con los nombres
+iniciales; no lo uses como proceso de sincronización del contenido real.
 
-## ⚙️ Inicio en otros entornos
+## Desarrollar React
 
-El repositorio no incluye scripts de arranque ligados a una máquina o instalación específica. Configura PostgreSQL y el entorno de Python de acuerdo con tu sistema operativo, proveedor o plataforma de despliegue; luego configura `.env`, aplica las migraciones y ejecuta Django con el comando apropiado para ese entorno.
-
-Para desarrollo local, una vez que PostgreSQL esté disponible y el entorno virtual esté activo:
+Para compilar manualmente en este equipo:
 
 ```powershell
-python manage.py runserver
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compilar-frontend.ps1
 ```
 
-## 🌐 Rutas disponibles
+Para recarga rápida, mantén Django en el puerto 8000 y ejecuta `pnpm dev` en
+`frontend/`; abre <http://127.0.0.1:5173/>. Vite reenvía `/api`, `/admin` y
+`/static` a Django, sin habilitar CORS abierto. En este equipo puedes ejecutar
+pnpm con `.local/tools/pnpm.cmd` desde la raíz usando `--dir frontend`.
 
-| Página | URL |
-|:--|:--|
-| Inicio | [http://127.0.0.1:8000/](http://127.0.0.1:8000/) |
-| Categorías | [http://127.0.0.1:8000/categorias/](http://127.0.0.1:8000/categorias/) |
-| Votaciones | [http://127.0.0.1:8000/votaciones/](http://127.0.0.1:8000/votaciones/) |
-| Detalle de votación | `/votaciones/<id>/` |
-| Resultados de demostración | [http://127.0.0.1:8000/resultados/](http://127.0.0.1:8000/resultados/) |
-| Registro | [http://127.0.0.1:8000/cuentas/registro/](http://127.0.0.1:8000/cuentas/registro/) |
-| Iniciar sesión | [http://127.0.0.1:8000/cuentas/login/](http://127.0.0.1:8000/cuentas/login/) |
-| Perfil | [http://127.0.0.1:8000/cuentas/perfil/](http://127.0.0.1:8000/cuentas/perfil/) |
-| Administración | [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) |
+El frontend compilado se sirve desde el mismo origen de Django. El manifiesto
+de Vite conecta `templates/react.html` con archivos que tienen hash de contenido.
+`static/frontend/` se genera y está excluido de Git: compílalo en cada instalación.
 
-## 🧩 Estructura del código
+## Arquitectura y crecimiento
 
 ```text
-catalogo/      Modelos, vistas, rutas y administración del catálogo
-cuentas/       Registro, autenticación, perfil y cierre de sesión
-config/        Configuración del proyecto y rutas principales
-templates/     Plantillas HTML de las páginas
-static/        CSS, JavaScript e imágenes
-prototipo_entrega1/  Prototipo HTML de referencia de la entrega anterior
-docs/          Documentación técnica y material de entrega
-manage.py      Herramienta de administración de Django
-requirements.txt    Dependencias Python del proyecto
+frontend/src/        React: componentes, páginas, contexto, formularios y cliente HTTP
+templates/react.html Plantilla Django con configuración JSON escapada
+config/frontend.py   Vista MVT de entrada y resolución del manifiesto Vite
+catalogo/models.py   Configuración y jerarquía Edición → Categoría → Votación → Opción
+catalogo/selectors.py Política compartida de publicación y consultas
+catalogo/serializers.py Contrato de datos públicos
+catalogo/api.py      Búsqueda, filtros y paginación
+cuentas/api.py       Registro, sesiones y edición permitida del perfil
+catalogo/admin.py    Administración con permisos e inlines
+prototipo_entrega1/  Referencia histórica; no se sirve como interfaz actual
 ```
 
-El proyecto sigue el patrón **MVT** de Django:
+La API está versionada en `/api/v1/`. Los listados tienen 12 elementos por
+defecto y un máximo de 48 por página. Las opciones de una votación se paginan
+de 12 en 12. Hay índices para relaciones y publicación, orden determinista,
+conteos en SQL y `select_related` para evitar una consulta por tarjeta.
+Una prueba verifica que aumentar el número de votaciones no aumenta el número
+de consultas del listado. Esto prepara el crecimiento del catálogo; no equivale
+a una prueba de carga ni a un despliegue de producción.
 
-1. **Modelo:** define los datos y sus relaciones en `catalogo/models.py`.
-2. **Vista:** consulta datos o gestiona autenticación en `catalogo/views.py` y `cuentas/views.py`.
-3. **Plantilla:** presenta las páginas HTML desde `templates/`.
+Rutas públicas: `/`, `/ediciones/`, `/categorias/`, `/votaciones/`,
+`/votaciones/<id>/`, `/resultados/`, `/cuentas/registro/`, `/cuentas/login/`,
+`/cuentas/perfil/` y `/admin/`.
 
-## 🧪 Pruebas
+Ejemplo de API: `/api/v1/votaciones/?edicion=1&categoria=2&q=Rey&pagina=1&limite=12`.
+La API pública es de lectura. La escritura del catálogo requiere permisos en Admin.
 
-Con el entorno virtual activo, PostgreSQL iniciado y `.env` configurado:
+## Verificar
+
+Con PostgreSQL iniciado:
 
 ```powershell
-python manage.py test
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
+.\.venv\Scripts\python.exe manage.py test --noinput
+.\.venv\Scripts\python.exe -m pip check
+cd frontend
+pnpm test
+pnpm run build
 ```
 
-## 📚 Documentación
+El usuario de PostgreSQL necesita permiso para crear la base temporal de pruebas.
+Las pruebas no usan ni eliminan los datos del catálogo principal.
 
-- [Documento técnico](docs/DOCUMENTO_TECNICO.md): arquitectura, configuración, modelos, autenticación y solución de problemas.
-- [Documento de Entrega 2](docs/ENTREGA_2.md): alcance académico y descripción de la implementación.
 
-## 🔐 Seguridad y configuración
-
-- No subas `.env`, contraseñas, claves secretas ni datos personales al repositorio.
-- Usa `DEBUG=True` únicamente en desarrollo local.
-- Antes de publicar el sistema, configura una clave secreta propia, `DEBUG=False`, `ALLOWED_HOSTS`, HTTPS y una base de datos segura.
-- Los datos de `cargar_datos_prueba` son ejemplos y no representan candidatos ni resultados oficiales.
-
----
-
-<div align="center">
-
-Hecho como proyecto académico de Desarrollo Web<br>
-**Fundación Universitaria del Área Andina · 2026**
-
-</div>
+Para un despliegue público se requiere configurar HTTPS, `DEBUG=False`, secretos,
+hosts, servidor WSGI/ASGI, estáticos con `collectstatic`, copias de seguridad y
+controles operativos. El servidor `runserver` es únicamente de desarrollo.

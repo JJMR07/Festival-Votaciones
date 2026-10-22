@@ -1,13 +1,14 @@
 from django.urls import path
 
-from . import views
+from config.frontend import index
 
 app_name = "catalogo"
 
 urlpatterns = [
-    path("", views.inicio, name="inicio"),
-    path("categorias/", views.lista_categorias, name="categorias"),
-    path("votaciones/", views.lista_votaciones, name="votaciones"),
-    path("votaciones/<int:pk>/", views.detalle_votacion, name="detalle"),
-    path("resultados/", views.resultados, name="resultados"),
+    path("", index, name="inicio"),
+    path("ediciones/", index, name="ediciones"),
+    path("categorias/", index, name="categorias"),
+    path("votaciones/", index, name="votaciones"),
+    path("votaciones/<int:pk>/", index, name="detalle"),
+    path("resultados/", index, name="resultados"),
 ]

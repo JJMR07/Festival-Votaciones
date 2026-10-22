@@ -7,21 +7,23 @@ from catalogo.models import Categoria, Edicion, Opcion, Votacion
 class Command(BaseCommand):
     help = "Carga datos de prueba (no son reglas confirmadas por el cliente)."
 
+    def add_arguments(self, parser):
+        parser.add_argument("--anio", type=int, default=2027)
+        parser.add_argument("--nombre", default="Festival de la Leyenda Vallenata")
+
     def handle(self, *args, **options):
         edicion, creada = Edicion.objects.get_or_create(
-            anio=2027,
+            anio=options["anio"],
+            nombre=options["nombre"],
             defaults={
-                "nombre": "Festival de la Leyenda Vallenata",
                 "descripcion": (
-                    "Edición de prueba 2027 para la Entrega 2. "
+                    f"Edición de prueba {options['anio']} para la Entrega 2. "
                     "Los nombres de categorías se tomaron del prototipo HTML."
                 ),
                 "activa": True,
             },
         )
-        if not creada:
-            edicion.activa = True
-            edicion.save(update_fields=["activa"])
+        # No reactivar ni sobrescribir contenido que el administrador haya editado.
 
         categorias_demo = [
             ("Rey Profesional", "Categoría de prueba tomada del prototipo de Entrega 1."),
@@ -45,7 +47,7 @@ class Command(BaseCommand):
             )
             votacion, _ = Votacion.objects.get_or_create(
                 categoria=categoria,
-                titulo=f"{nombre} 2027",
+                titulo=f"{nombre} {options['anio']}",
                 defaults={
                     "descripcion": (
                         "Votación de prueba para mostrar la jerarquía "

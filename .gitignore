@@ -1,5 +1,8 @@
 venv/
 .venv/
+.local/
+node_modules/
+static/frontend/
 .env
 __pycache__/
 *.py[cod]
