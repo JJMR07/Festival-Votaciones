@@ -135,16 +135,21 @@ de Vite conecta `templates/react.html` con archivos que tienen hash de contenido
 ## Arquitectura y crecimiento
 
 ```text
-frontend/src/        React: componentes, páginas, contexto, formularios y cliente HTTP
-templates/react.html Plantilla Django con configuración JSON escapada
-config/frontend.py   Vista MVT de entrada y resolución del manifiesto Vite
-catalogo/models.py   Configuración y jerarquía Edición → Categoría → Votación → Opción
-catalogo/selectors.py Política compartida de publicación y consultas
-catalogo/serializers.py Contrato de datos públicos
-catalogo/api.py      Búsqueda, filtros y paginación
-cuentas/api.py       Registro, sesiones y edición permitida del perfil
-catalogo/admin.py    Administración con permisos e inlines
-prototipo_entrega1/  Referencia histórica; no se sirve como interfaz actual
+config/                 Configuración Django, URLs y entrada MVT/manifest Vite
+catalogo/               Modelos, reglas, API y Admin del catálogo
+cuentas/                Autenticación, perfil y API de cuentas
+templates/react.html    Plantilla Django con configuración JSON escapada
+frontend/src/
+  app/                  Cliente HTTP, contexto, hooks, tema y utilidades
+  components/           Componentes React compartidos
+  pages/                Pantallas de catálogo, votaciones y cuentas
+  styles/               Estilos base e identidad visual
+  tests/                Pruebas de interfaz y configuración de Vitest
+  main.jsx              Punto de entrada React y definición de rutas
+static/img/             Imágenes de la aplicación Django/React
+prototipo_entrega1/     Prototipo histórico completo (HTML, CSS e imágenes)
+scripts/                Arranque local y compilación de React
+docs/                   Guías, entregas y evidencias
 ```
 
 La API está versionada en `/api/v1/`. Los listados tienen 12 elementos por

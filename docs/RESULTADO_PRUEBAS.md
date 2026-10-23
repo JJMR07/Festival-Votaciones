@@ -64,7 +64,7 @@ Archivo: `cuentas/tests.py`, clase `CuentasTests`.
 
 ## Frontend: interfaz y cliente de API
 
-Archivo: `frontend/src/app.test.jsx`. Los identificadores siguientes corresponden a los nombres declarados en `it(...)`.
+Archivo: `frontend/src/tests/app.test.jsx`. Los identificadores siguientes corresponden a los nombres declarados en `it(...)`.
 
 | Prueba | Descripción de lo verificado | Estado |
 | --- | --- | --- |
@@ -78,7 +78,7 @@ Archivo: `frontend/src/app.test.jsx`. Los identificadores siguientes corresponde
 
 ## Frontend: modo claro y oscuro
 
-Archivo: `frontend/src/theme.test.jsx`.
+Archivo: `frontend/src/tests/theme.test.jsx`.
 
 | Prueba | Descripción de lo verificado | Estado |
 | --- | --- | --- |

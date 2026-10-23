@@ -188,20 +188,19 @@ Pagina-web---Sistema-de-votaciones-main/
 │   ├── urls.py                ⭐ /cuentas/registro, login, logout, perfil
 │   └── tests.py               ✅2 pruebas de autenticación
 │
-├── templates/                 📄 HTML que Django renderiza
-│   ├── base.html              ⭐ La "madre": header, menú y footer de todas las páginas
-│   ├── catalogo/              inicio, categorias, votaciones, detalle, resultados
-│   └── cuentas/               login, registro, perfil
-│
-├── static/                    🎨 Archivos tal cual los ve el navegador
-│   ├── css/styles.css         El CSS completo del prototipo (+ estilos nuevos)
-│   ├── js/app.js              Oculta los mensajes de Django a los4 segundos
-│   └── img/                   logo.png, music.png, music2.png (los del prototipo)
-│
-├── img/                       Imágenes originales del prototipo HTML
-├── prototipo_entrega1/        📐 El prototipo HTML de la Entrega 1 (referencia visual)
-├── docs/                      📚 ENTREGA_2.md (documento del curso) y este documento
-└── venv/                      🐍 Entorno virtual de Python (se ignora en Git)
+├── templates/
+│   └── react.html             ⭐ Entrada React con configuración segura del sitio
+├── frontend/src/
+│   ├── app/                   Cliente API, contexto, hooks, tema y utilidades
+│   ├── components/            Componentes compartidos de React
+│   ├── pages/                 Pantallas de catálogo y cuentas
+│   ├── styles/                Estilos base e identidad visual
+│   ├── tests/                 Pruebas de interfaz y setup de Vitest
+│   └── main.jsx               ⭐ Entrada React y rutas
+├── static/img/                Imágenes servidas por Django
+├── prototipo_entrega1/        📐 HTML, CSS e imágenes históricas; no es la interfaz activa
+├── docs/                      📚 Documentación y evidencias
+└── .venv/                     🐍 Entorno virtual local (se ignora en Git)
 ```
 
 ⭐ = archivos que debes conocer sí o sí. 🔒 = nunca lo subas a GitHub.

@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { THEME_KEY, readTheme, useTheme } from './theme';
+import { THEME_KEY, readTheme, useTheme } from '../app/theme';
 
 let media;
 let change;

@@ -8,13 +8,13 @@ import '@fontsource/raleway/latin-800.css';
 import React, { Component } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppProvider } from './context';
-import { Layout } from './components';
-import { Home, Catalog, Detail, NotFound } from './pages';
-import { AuthPage, Profile } from './auth';
-import './styles.css';
-import './brand.css';
-import { api } from './api';
+import { api } from './app/api';
+import { AppProvider } from './app/context';
+import { Layout } from './components/shared';
+import { Home, Catalog, Detail, NotFound } from './pages/catalog';
+import { AuthPage, Profile } from './pages/auth';
+import './styles/base.css';
+import './styles/brand.css';
 
 const bootstrapNode = document.getElementById('app-bootstrap');
 // Django proporciona el bootstrap compilado. Vite usa el proxy local en desarrollo.

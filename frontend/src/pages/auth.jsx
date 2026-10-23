@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, CheckCircle2, UserRound, LockKeyhole, Settings2 } from 'lucide-react';
-import { useApp } from './context';
-import { post } from './api';
-import { Artwork, PageHeading } from './components';
-import { formatDate } from './pages';
+import { useApp } from '../app/context';
+import { post } from '../app/api';
+import { formatDate } from '../app/date';
+import { Artwork, PageHeading } from '../components/shared';
 
 export function Field({ name, label, errors, ...props }) {
   const messages = errors?.[name];
@@ -35,8 +35,8 @@ export function AuthPage({ register = false }) {
       if (error.status === 403) await refreshSession();
     } finally { setBusy(false); }
   }
-  return <div className="wrap auth-layout"><aside className="auth-illustration"><Artwork src={config.imagen_portada}/><div><span className="eyebrow">{config.subtitulo}</span><h2>{config.nombre}</h2><p>{t.pie}</p></div></aside><div className="auth-panel"><PageHeading eyebrow={register ? t.registro : t.entrar} title={register ? t.titulo_registro : t.titulo_login} description={register ? t.descripcion_registro : t.descripcion_login}/>
-    {disabled ? <p className="notice">{t.cuenta_deshabilitada}</p> : <form onSubmit={submit}>
+  return <div className="wrap auth-layout auth-page"><aside className="auth-illustration"><Artwork src={config.imagen_portada}/><div><span className="eyebrow">{config.subtitulo}</span><h2>{config.nombre}</h2><p>{t.pie}</p></div></aside><div className="auth-panel"><PageHeading eyebrow={register ? t.registro : t.entrar} title={register ? t.titulo_registro : t.titulo_login} description={register ? t.descripcion_registro : t.descripcion_login}/>
+    {disabled ? <p className="notice">{t.cuenta_deshabilitada}</p> : <form className="auth-form" onSubmit={submit}>
       {message && <div className="form-alert" role="alert">{message}</div>}
       {errors.__all__ && <p className="field-error" role="alert">{errors.__all__.map(e => e.message).join(' ')}</p>}
       <Field name="username" label={t.usuario} required maxLength={150} autoComplete="username" errors={errors}/>

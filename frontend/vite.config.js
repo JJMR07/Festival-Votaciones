@@ -12,5 +12,5 @@ export default defineConfig(({ command }) => ({
     manifest: true,
     rollupOptions: { input: fileURLToPath(new URL('./src/main.jsx', import.meta.url)) },
   },
-  test: { environment: 'jsdom', setupFiles: ['./src/test-setup.js'] },
+  test: { environment: 'jsdom', setupFiles: ['./src/tests/setup.js'] },
 }));

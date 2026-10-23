@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Music2, Menu, X, Search, SlidersHorizontal, AlertCircle, LoaderCircle, Info, LogOut, Sun, Moon } from 'lucide-react';
-import { useApp } from './context';
-import { useResource } from './hooks';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Music2, Search, SlidersHorizontal, AlertCircle, LoaderCircle, Info, LogOut, Sun, Moon } from 'lucide-react';
+import { useApp } from '../app/context';
+import { useResource } from '../app/hooks';
 
 export function Artwork({ src, className = '', alt = '' }) {
   const { config } = useApp();
@@ -14,28 +14,26 @@ export function Artwork({ src, className = '', alt = '' }) {
 
 export function Layout({ children }) {
   const { config, t, user, signout } = useApp();
-  const [open, setOpen] = useState(false);
   const [logoutError, setLogoutError] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const mainRef = useRef(null);
-  useEffect(() => { setOpen(false); window.scrollTo(0, 0); mainRef.current?.focus({ preventScroll: true }); }, [location.pathname]);
-  useEffect(() => { const close = e => { if (e.key === 'Escape') setOpen(false); }; window.addEventListener('keydown', close); return () => window.removeEventListener('keydown', close); }, []);
-  return <>
+  useEffect(() => { window.scrollTo(0, 0); mainRef.current?.focus({ preventScroll: true }); }, [location.pathname]);
+  return <div className="app-shell site-shell">
     <a className="skip-link" href="#contenido">{t.saltar}</a>
-    <header className="site-header"><div className="header-inner">
-      <Link to="/" className="brand"><Artwork src={config.logo} /><span><strong>{config.nombre_corto}</strong><small>{config.subtitulo}</small></span></Link>
-      <nav id="navigation" className={open ? 'navigation is-open' : 'navigation'} aria-label={t.navegacion}>
-        <NavLink to="/" end>{t.inicio}</NavLink><NavLink to="/ediciones/">{t.ediciones}</NavLink>
-        <NavLink to="/categorias/">{t.categorias}</NavLink><NavLink to="/votaciones/">{t.votaciones}</NavLink>
-        <NavLink to="/resultados/">{t.resultados}</NavLink>
-        <Link className="btn btn-small" to={user ? '/cuentas/perfil/' : '/cuentas/login/'}>{user ? t.perfil : t.entrar}<ArrowUpRight size={15} /></Link>
-      </nav>
-      <div className="header-tools"><ThemePicker/><button className="menu-toggle icon-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="navigation" aria-label={open ? t.cerrar_menu : t.abrir_menu}>{open ? <X /> : <Menu />}</button></div>
+    <header className="site-header reference-header"><div className="header-inner">
+      <Link to="/" className="brand" aria-label={t.inicio}><Artwork src={config.logo} /></Link>
+      <Link to="/" className="header-title">{config.nombre_corto}</Link>
+      <div className="header-tools"><ThemePicker/><Link className="btn btn-small header-account" to={user ? '/cuentas/perfil/' : '/cuentas/login/'}>{user ? t.perfil : t.entrar}<ArrowUpRight size={15} /></Link></div>
     </div></header>
     <main id="contenido" ref={mainRef} tabIndex={-1}>{children}</main>
-    <footer className="site-footer"><div className="footer-top wrap"><div><Link to="/" className="footer-brand">{config.nombre_corto}<Music2 size={22}/></Link><p>{t.pie}</p></div><div className="footer-links"><Link to="/ediciones/">{t.ediciones}</Link><Link to="/categorias/">{t.categorias}</Link><Link to="/votaciones/">{t.votaciones}</Link>{user?.is_staff && <a href="/admin/">{t.administrar}</a>}{user && <button onClick={async () => { try { await signout(); navigate('/'); } catch { setLogoutError(true); } }}><LogOut size={14}/>{t.salir}</button>}</div></div><div className="footer-bottom wrap"><span>© {new Date().getFullYear()} {config.nombre}</span><span>{t.pie_nota}</span></div>{logoutError && <p role="alert">{t.error}</p>}</footer>
-  </>;
+    <footer className="home-footer"><nav aria-label={t.navegacion}>
+      <NavLink to="/" end>{t.inicio}</NavLink><NavLink to="/categorias/">{t.categorias}</NavLink>
+      <NavLink to="/votaciones/">{t.votaciones}</NavLink><NavLink to="/resultados/">{t.resultados}</NavLink>
+      <NavLink to="/cuentas/perfil/">{t.perfil}</NavLink>
+      {user && <button className="nav-signout" onClick={async () => { try { await signout(); navigate('/'); } catch { setLogoutError(true); } }}><LogOut size={14}/>{t.salir}</button>}
+    </nav>{logoutError && <p className="nav-error" role="alert">{t.error}</p>}</footer>
+  </div>;
 }
 
 export function ThemePicker() {

@@ -2,10 +2,10 @@ import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { AppProvider } from './context';
-import { AuthPage } from './auth';
-import { CatalogCard, Filters, Notice, ResourceState } from './components';
-import { api, post } from './api';
+import { AppProvider } from '../app/context';
+import { AuthPage } from '../pages/auth';
+import { CatalogCard, Filters, Notice, ResourceState } from '../components/shared';
+import { api, post } from '../app/api';
 
 const config = { nombre: 'Festival editable', nombre_corto: 'Festival', logo: '/static/img/logo.png', imagen_predeterminada: '/static/img/music.png', registro_habilitado: true, color_primario: '#185442', color_acento: '#e7b95c', textos: { entrar: 'Entrar personalizado', registro: 'Crear cuenta', titulo_login: 'Título editable', descripcion_login: 'Texto editable', usuario: 'Usuario', contrasena: 'Contraseña', enviando: 'Enviando', error_formulario: 'Revisa los campos', sesion_expirada: 'Sesión caducada', error: 'Error de conexión', aplicar: 'Buscar', buscar_label: 'Buscar', buscar: 'Buscar...', edicion: 'Edición', todas_ediciones: 'Todas', limpiar: 'Limpiar', sin_votos: 'Consulta', aviso_votos: 'El voto no está habilitado', ver_detalle: 'Ver', estado_sin_fecha: 'Publicado', opciones: 'Participantes', sin_descripcion: 'Sin descripción', reintentar: 'Reintentar', no_encontrado: 'No encontrado' } };
 
