@@ -2,7 +2,19 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from .defaults import textos_iniciales
-from .validators import validar_imagen, validar_textos
+from .validators import validar_imagen, validar_textos, validar_imagen_archivo, ruta_imagen
+from django.core.validators import FileExtensionValidator
+
+
+class ImagenSubida(models.Model):
+    imagen_archivo = models.ImageField(
+        "subir imagen", upload_to=ruta_imagen, blank=True,
+        validators=[validar_imagen_archivo, FileExtensionValidator(["jpg", "jpeg", "png", "webp"])],
+        help_text="JPG, PNG o WebP, máximo 5 MB y 4096 px por lado. Tiene prioridad sobre la URL. Al quitarla se vuelve a usar la URL.",
+    )
+
+    class Meta:
+        abstract = True
 
 
 class ConfiguracionSitio(models.Model):
@@ -16,6 +28,9 @@ class ConfiguracionSitio(models.Model):
     color_acento = models.CharField(max_length=7, default="#e9d294", validators=[RegexValidator(r"^#[0-9a-fA-F]{6}$", "Usa un color hexadecimal.")])
     registro_habilitado = models.BooleanField(default=True)
     textos = models.JSONField(default=textos_iniciales, validators=[validar_textos], help_text="Textos de toda la interfaz. Conserva las claves y edita sus valores. Las claves omitidas usan el valor inicial.")
+    logo_archivo = models.ImageField("subir logo", upload_to=ruta_imagen, blank=True, validators=[validar_imagen_archivo, FileExtensionValidator(["jpg", "jpeg", "png", "webp"])], help_text="JPG, PNG o WebP, máximo 5 MB y 4096 px por lado. Tiene prioridad sobre la URL.")
+    portada_archivo = models.ImageField("subir portada", upload_to=ruta_imagen, blank=True, validators=[validar_imagen_archivo, FileExtensionValidator(["jpg", "jpeg", "png", "webp"])], help_text="JPG, PNG o WebP, máximo 5 MB y 4096 px por lado. Tiene prioridad sobre la URL.")
+    predeterminada_archivo = models.ImageField("subir imagen de respaldo", upload_to=ruta_imagen, blank=True, validators=[validar_imagen_archivo, FileExtensionValidator(["jpg", "jpeg", "png", "webp"])], help_text="JPG, PNG o WebP, máximo 5 MB y 4096 px por lado. Tiene prioridad sobre la URL.")
     actualizada = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -36,7 +51,7 @@ class ConfiguracionSitio(models.Model):
         return cls.objects.filter(pk=1).first() or cls(pk=1)
 
 
-class Edicion(models.Model):
+class Edicion(ImagenSubida):
     """Una edición del festival (por ejemplo, 2027)."""
 
     nombre = models.CharField(max_length=150)
@@ -56,7 +71,7 @@ class Edicion(models.Model):
         return f"{self.nombre} ({self.anio})"
 
 
-class Categoria(models.Model):
+class Categoria(ImagenSubida):
     """Categoría asociada a una edición (Rey Profesional, Rey Infantil, etc.)."""
 
     edicion = models.ForeignKey(
@@ -81,7 +96,7 @@ class Categoria(models.Model):
         return f"{self.nombre} — {self.edicion.anio}"
 
 
-class Votacion(models.Model):
+class Votacion(ImagenSubida):
     """Proceso de votación dentro de una categoría."""
 
     categoria = models.ForeignKey(
@@ -120,7 +135,7 @@ class Votacion(models.Model):
         return self.titulo
 
 
-class Opcion(models.Model):
+class Opcion(ImagenSubida):
     """Opción (candidato o participante) de una votación."""
 
     votacion = models.ForeignKey(

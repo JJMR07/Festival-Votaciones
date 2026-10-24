@@ -1,0 +1,7 @@
+Solicitaste restablecer la contraseña de tu cuenta en {{ site_name }}.
+
+Abre este enlace para elegir una nueva contraseña:
+{{ protocol }}://{{ domain }}{% url 'cuentas:restablecer' uidb64=uid token=token %}
+
+El enlace caduca en una hora y solo se puede usar una vez.
+Si no hiciste esta solicitud, puedes ignorar este mensaje.

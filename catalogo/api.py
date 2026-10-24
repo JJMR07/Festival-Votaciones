@@ -6,7 +6,7 @@ from django.views.decorators.cache import never_cache
 
 from .models import ConfiguracionSitio
 from .selectors import categorias_publicas, ediciones_publicas, votaciones_publicas
-from .serializers import categoria_data, configuracion_data, edicion_data, votacion_data
+from .serializers import imagen_url, categoria_data, configuracion_data, edicion_data, votacion_data
 
 
 def listar(request, queryset, serializer, *, edicion=None, categoria=None, nombre="nombre"):
@@ -73,6 +73,6 @@ def detalle(request, pk):
     except (ValueError, OverflowError):
         return JsonResponse({"error": "Página de participantes inválida."}, status=400)
     data["opciones"] = {"items": [{"id": o.pk, "nombre": o.nombre, "descripcion": o.descripcion,
-                                   "imagen": o.imagen} for o in paginador.page(pagina)],
+                                   "imagen": imagen_url(o)} for o in paginador.page(pagina)],
                         "pagina": pagina, "paginas": paginador.num_pages, "total": paginador.count}
     return JsonResponse(data)

@@ -43,10 +43,22 @@ Entra a <http://127.0.0.1:8000/admin/> con tu usuario administrador.
 | Votaciones | Título, descripción, categoría, fechas, imagen, orden y publicación |
 | Opciones | Nombre del participante, descripción, votación, imagen, orden y visibilidad |
 
-Las imágenes admiten URL `https://` o rutas de archivos existentes en `/static/`.
-Una imagen vacía en el catálogo utiliza la imagen de respaldo del sitio.
+Puedes subir imágenes desde Admin para ediciones, categorías, votaciones,
+participantes, logo, portada e imagen de respaldo. Se admiten JPG, PNG y WebP
+de hasta **5 MB y 4096 píxeles por lado**. Se valida que el archivo sea una imagen
+real y se muestra una vista previa antes de guardar. Los archivos se conservan
+en `media/`, excluido de Git, y Django los sirve localmente bajo `/media/`.
+
+También se conservan las URL `https://` y las rutas de archivos existentes en
+`/static/`. El archivo subido tiene prioridad; al marcar **Limpiar** y guardar,
+se vuelve a usar la URL. Una imagen vacía utiliza la imagen de respaldo del sitio.
 No se admiten HTML ni scripts como contenido. Los colores aceptan `#RRGGBB`;
 elige un primario oscuro que mantenga contraste con el texto blanco.
+
+Los textos de la interfaz se agrupan en navegación y apariencia, inicio y
+catálogo, cuentas y contraseñas, y mensajes y accesibilidad. Los listados del
+Admin incluyen miniaturas y las acciones **Publicar / mostrar seleccionados**
+y **Ocultar seleccionados**, con registro de cambios del administrador.
 
 Al guardar, vuelve al sitio público: al recuperar el foco se actualizan
 configuración, sesión y catálogo. Recargar también obtiene los cambios.
@@ -66,10 +78,26 @@ desde la base de datos. Cambiar estas reglas sigue requiriendo desarrollo y prue
 - Catálogo de múltiples ediciones y categorías, con filtros y búsqueda.
 - Listados y participantes paginados; carga por demanda de opciones de filtros.
 - Registro, login, logout y perfil editable mediante sesiones reales de Django.
+- Cambio de contraseña desde el perfil y recuperación desde el login mediante
+  un enlace de un solo uso, válido durante una hora.
 - Protección CSRF, validación de contraseñas y permisos del administrador.
 - Estados de fecha calculados: publicado, próximo, en periodo y finalizado.
 - Diseño responsivo, navegación móvil, estados de carga, vacío y error.
 - Tipografías, CSS, JavaScript e imágenes predeterminadas servidos localmente.
+- Pantallas cargadas por demanda, consultas públicas compartidas durante 30 segundos
+  y loader de navegación que respeta la preferencia de movimiento reducido.
+
+### Recuperar contraseñas en este equipo
+
+En el login, pulsa **¿Olvidaste tu contraseña?** e introduce un correo registrado.
+En esta instalación los mensajes se guardan como archivos en `.local/correos/`;
+no se envían a un buzón externo. Abre el último archivo y copia su enlace al
+navegador para elegir una contraseña nueva. Para cambiar una contraseña conocida,
+entra al perfil y selecciona **Cambiar contraseña**.
+
+Los errores de contraseña se validan en Django. Cambiar la contraseña desde el
+perfil conserva la sesión actual. La recuperación no inicia sesión automáticamente
+y un enlace usado o vencido permite solicitar otro.
 
 No se registran votos ni se inventan resultados. La página de resultados informa
 el alcance y enlaza los procesos publicados. Votos, elegibilidad, auditoría y
@@ -183,6 +211,42 @@ pnpm run build
 
 El usuario de PostgreSQL necesita permiso para crear la base temporal de pruebas.
 Las pruebas no usan ni eliminan los datos del catálogo principal.
+
+El workflow `.github/workflows/checks.yml` ejecuta las pruebas de Python y React,
+la compilación, la comprobación de migraciones y los recorridos Playwright en
+cada pull request y en los pushes a `main`. Usa PostgreSQL de prueba y no despliega
+la aplicación. Se ejecutará en GitHub cuando estos archivos se suban al repositorio.
+
+### Recorridos de navegador y accesibilidad
+
+Las fichas de participantes muestran la imagen y descripción guardadas en Admin.
+Se abren con teclado, se cierran con Escape y devuelven el foco al botón de origen.
+Al regresar de una votación se conservan búsqueda, filtros y página del listado.
+Los nuevos mensajes de navegación, fichas, resultados y errores se editan también
+en **Configuración del sitio → Textos de la interfaz**.
+
+Después de compilar React, ejecuta desde `frontend/`:
+
+```powershell
+pnpm exec playwright install chromium
+pnpm test:e2e
+```
+
+Playwright inicia Django en `127.0.0.1:8011` con una base SQLite temporal y datos
+de prueba. No conecta con PostgreSQL ni modifica el catálogo o las cuentas locales.
+El puerto 8011 debe estar libre. La instalación de Python debe tener los requisitos
+del proyecto y el build de React debe estar actualizado antes de ejecutar la suite.
+
+Los recorridos cubren registro, login válido e inválido, edición persistente del
+perfil, cambio y recuperación de contraseña leyendo el correo local de prueba,
+logout, filtros, detalle, ficha de participante y regreso al listado. También
+comprueban una subida real desde Admin, su vista previa y la imagen servida al catálogo.
+También comprueban recuperación ante un error de servicio, estados de carga,
+desbordamiento horizontal y espacio del menú móvil. Se ejecutan en Chromium
+con tamaños de escritorio y móvil, incluido un ancho de 320 px.
+Las comprobaciones automáticas con axe cubren páginas del catálogo y formularios
+en los temas claro y oscuro; complementan la revisión manual de accesibilidad.
+Capturas y trazas se guardan en `frontend/test-results/`, excluido de Git.
 
 
 Para un despliegue público se requiere configurar HTTPS, `DEBUG=False`, secretos,

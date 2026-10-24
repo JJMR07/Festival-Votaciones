@@ -14,8 +14,8 @@
   --text: #f5f1ee;
   --muted: #b7b1ae;
   --line: rgba(212, 175, 55, 0.25);
-  --link: var(--primary);
-  --focus: var(--accent);
+  --link: #ff9898;
+  --focus: #f3cc61;
   --notice-bg: #2a241a;
   --notice-line: rgba(212, 175, 55, 0.4);
   --notice-text: #f0dcc0;
@@ -50,7 +50,7 @@
   --muted: #665c54;
   --line: rgba(122, 93, 34, 0.22);
   --link: #b91c1c;
-  --focus: var(--accent);
+  --focus: #754714;
   --notice-bg: #faf5e9;
   --notice-line: #d9c78d;
   --notice-text: #6e551d;
@@ -369,8 +369,6 @@ a:hover { color: var(--link); }
 .catalog-page .page-heading>p { margin-inline: auto; }
 .catalog-page .filters { margin-top: 28px; }
 .catalog-page .collection-meta { margin-top: 28px; }
-.catalog-categorias .filters { display: none; }
-.catalog-categorias .collection-meta { display: none; }
 .catalog-votaciones .page-heading,.catalog-resultados .page-heading { margin-bottom: 30px; }
 .catalog-resultados>.notice { max-width: 880px; margin: 0 auto 25px; }
 .site-shell .home-footer { position: fixed; }

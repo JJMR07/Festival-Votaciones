@@ -16,7 +16,7 @@ from catalogo.serializers import configuracion_data
 
 @ensure_csrf_cookie
 @never_cache
-def index(request, pk=None):
+def index(request, pk=None, **kwargs):
     if pk is not None and not votaciones_publicas().filter(pk=pk).exists():
         raise Http404
     manifest = Path(settings.BASE_DIR) / "static/frontend/.vite/manifest.json"

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Music2, Search, SlidersHorizontal, AlertCircle, LoaderCircle, Info, LogOut, Sun, Moon } from 'lucide-react';
 import { useApp } from '../app/context';
+import { NavigationLoader } from './navigation-loader';
 import { useResource } from '../app/hooks';
 
 export function Artwork({ src, className = '', alt = '' }) {
@@ -9,17 +10,33 @@ export function Artwork({ src, className = '', alt = '' }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
   return failed ? <div className={`art-fallback ${className}`} role={alt ? 'img' : undefined} aria-label={alt || undefined}><Music2 /></div>
-    : <img className={className} src={src || config.imagen_predeterminada} alt={alt} loading="lazy" onError={() => setFailed(true)} />;
+    : <img className={className} src={src || config.imagen_predeterminada} alt={alt} loading="lazy" decoding="async" onError={() => setFailed(true)} />;
 }
 
 export function Layout({ children }) {
   const { config, t, user, signout } = useApp();
   const [logoutError, setLogoutError] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const mainRef = useRef(null);
-  useEffect(() => { window.scrollTo(0, 0); mainRef.current?.focus({ preventScroll: true }); }, [location.pathname]);
-  return <div className="app-shell site-shell">
+  const footerRef = useRef(null);
+  const shellRef = useRef(null);
+  const previousPath = useRef(location.pathname);
+  useEffect(() => {
+    const measure = () => shellRef.current?.style.setProperty('--footer-height', `${footerRef.current?.getBoundingClientRect().height || 90}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (footerRef.current) observer.observe(footerRef.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (previousPath.current !== location.pathname) {
+      window.scrollTo(0, 0);
+      mainRef.current?.focus({ preventScroll: true });
+    }
+    previousPath.current = location.pathname;
+  }, [location.pathname]);
+  return <div ref={shellRef} className="app-shell site-shell">
+    <NavigationLoader/>
     <a className="skip-link" href="#contenido">{t.saltar}</a>
     <header className="site-header reference-header"><div className="header-inner">
       <Link to="/" className="brand" aria-label={t.inicio}><Artwork src={config.logo} /></Link>
@@ -27,11 +44,11 @@ export function Layout({ children }) {
       <div className="header-tools"><ThemePicker/><Link className="btn btn-small header-account" to={user ? '/cuentas/perfil/' : '/cuentas/login/'}>{user ? t.perfil : t.entrar}<ArrowUpRight size={15} /></Link></div>
     </div></header>
     <main id="contenido" ref={mainRef} tabIndex={-1}>{children}</main>
-    <footer className="home-footer"><nav aria-label={t.navegacion}>
+    <footer ref={footerRef} className="home-footer"><nav aria-label={t.navegacion}>
       <NavLink to="/" end>{t.inicio}</NavLink><NavLink to="/categorias/">{t.categorias}</NavLink>
       <NavLink to="/votaciones/">{t.votaciones}</NavLink><NavLink to="/resultados/">{t.resultados}</NavLink>
       <NavLink to="/cuentas/perfil/">{t.perfil}</NavLink>
-      {user && <button className="nav-signout" onClick={async () => { try { await signout(); navigate('/'); } catch { setLogoutError(true); } }}><LogOut size={14}/>{t.salir}</button>}
+      {user && <button className="nav-signout" onClick={async () => { try { await signout(); } catch { setLogoutError(true); } }}><LogOut size={14}/>{t.salir}</button>}
     </nav>{logoutError && <p className="nav-error" role="alert">{t.error}</p>}</footer>
   </div>;
 }
@@ -50,10 +67,11 @@ export function PageHeading({ eyebrow, title, description }) {
   return <header className="page-heading"><span className="eyebrow"><span/>{eyebrow}</span><h1>{title}</h1><p>{description}</p></header>;
 }
 
-export function ResourceState({ resource }) {
+export function ResourceState({ resource, skeleton }) {
   const { t } = useApp();
+  if (resource.loading && skeleton) return skeleton;
   if (resource.loading) return <div className="state" role="status"><LoaderCircle className="spin"/><p>{t.cargando}</p></div>;
-  if (resource.error) return <div className="state" role="alert"><AlertCircle/><h2>{resource.error.status === 404 ? t.no_encontrado : t.error}</h2><button className="btn btn-outline" onClick={resource.retry}>{t.reintentar}</button></div>;
+  if (resource.error) return <div className="state" role="alert"><AlertCircle/><h2>{resource.error.status === 404 ? t.no_encontrado : resource.error.status === 400 ? (t.error_filtros || t.error) : resource.error.status >= 500 ? (t.error_servicio || t.error) : !resource.error.status ? (t.error_conexion || t.error) : t.error}</h2><button className="btn btn-outline" onClick={resource.retry}>{t.reintentar}</button></div>;
   return null;
 }
 

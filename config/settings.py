@@ -90,6 +90,13 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+# En local los enlaces de recuperación se guardan como correos, no se envían.
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / ".local" / "correos"
+DEFAULT_FROM_EMAIL = "Festival <no-reply@festival.local>"
+PASSWORD_RESET_TIMEOUT = 3600
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", "http://localhost:5173"] if DEBUG else []
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -10,4 +10,7 @@ urlpatterns = [
     path("login/", index, name="login"),
     path("logout/", cerrar_sesion, name="logout"),
     path("perfil/", index, name="perfil"),
+    path("contrasena/", index, name="contrasena"),
+    path("recuperar/", index, name="recuperar"),
+    path("restablecer/<str:uidb64>/<str:token>/", index, name="restablecer"),
 ]

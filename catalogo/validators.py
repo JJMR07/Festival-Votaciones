@@ -1,5 +1,31 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
+from pathlib import Path
+from uuid import uuid4
+
+
+def ruta_imagen(instance, filename):
+    return f"catalogo/{uuid4().hex}{Path(filename).suffix.lower()}"
+
+
+def validar_imagen_archivo(archivo):
+    """Imágenes raster de hasta 5 MB y 4096 píxeles por lado."""
+    from PIL import Image, UnidentifiedImageError
+
+    if archivo.size > 5 * 1024 * 1024:
+        raise ValidationError("La imagen debe pesar como máximo 5 MB.")
+    try:
+        archivo.seek(0)
+        with Image.open(archivo) as image:
+            if image.format not in {"JPEG", "PNG", "WEBP"}:
+                raise ValidationError("Selecciona una imagen JPG, PNG o WebP.")
+            if max(image.size) > 4096:
+                raise ValidationError("La imagen no puede superar 4096 píxeles por lado.")
+            image.verify()
+    except (UnidentifiedImageError, OSError, Image.DecompressionBombError) as error:
+        raise ValidationError("El archivo no es una imagen válida.") from error
+    finally:
+        archivo.seek(0)
 
 
 def validar_imagen(valor):
